@@ -21,7 +21,7 @@
 
 ## Wprowadzenie
 
-Rozdział ten opowiada o istocie  i zasadzie działania sztucznych sieci neuronowych. Opisuje ich genezę, budowę, zastosowania we współczesnym świecie i mechanizmy, które zachodzą zarówno podczas trenowania, jak i ewaluacji modeli opartych o sztuczne sieci neuronowe.
+Rozdział ten opowiada o istocie i zasadzie działania sztucznych sieci neuronowych. Opisuje ich genezę, budowę, zastosowania we współczesnym świecie i mechanizmy, które zachodzą zarówno podczas trenowania, jak i ewaluacji modeli opartych o sztuczne sieci neuronowe.
 
 
 ### Geneza
@@ -49,6 +49,8 @@ Sztuczne sieci neuronowe stosuje się m.in. do:
 
 
 ### Propagacja w przód
+
+
 
 ### Propagacja w tył (Backpropagation)
 

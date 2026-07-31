@@ -18,7 +18,8 @@
 - [ ] M.2.7 Opisany fenomen DINOv3 oraz modeli FSL i ZSL
 - [ ] M.2.8 Dodano plik .ipynb pokazujący proste zastosowanie modeli FSL i ZSL
 - [ ] M.2.9 Opisane modele vLLM 
-- [ ] M.2.10 Dodano 
+- [ ] M.2.10 Dodano plik .ipynb z prostym przykładem zastosowania modeli vLLM
+- [ ] M.2.11 Zrobiona tabela porównawcza dla klasycznych modeli CNN, FSL, ZSL i vLLM
 
 ## M.3 - Ukończony podrozdział GAN
 
