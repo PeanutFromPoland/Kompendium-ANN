@@ -33,3 +33,4 @@
 - [ ] M.6.2 Opisane dekodery
 - [ ] M.6.3 Opisane metody próbkowania (wiązkowe, top-k i top-p)
 - [ ] M.6.4 Dodano plik .ipynb
+- [ ] M.6.5 Opisany mechanizm atencji jedno i wielogłowej oraz feed forward

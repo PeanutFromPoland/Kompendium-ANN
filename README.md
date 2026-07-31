@@ -72,7 +72,7 @@ Sztuczne sieci neuronowe stosuje się m.in. do:
 
 #### Mechanizm atencji
 
-#### Forward feeding
+#### Feed forward
 
 #### Enkoder
 
