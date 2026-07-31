@@ -4,7 +4,11 @@ ZADANIA CYKLICZNE
 
 DO ZROBIENIA
 
-- [ ] Rozpisz milestones'y
+- [ ] Rozpisz milestones'y M.2
+- [ ] Rozpisz milestones'y M.3
+- [ ] Rozpisz milestones'y M.4
+- [ ] Rozpisz milestones'y M.5
+- [ ] Rozpisz milestones'y M.6
 - [ ] Opisz słownie propagację w przód
 - [ ] Skombinuj wzory do propagacji w przód
 - [ ] Opisz słownie trenowanie poprzez propagację w tył

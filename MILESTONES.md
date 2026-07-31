@@ -15,6 +15,10 @@
 - [ ] M.2.4 Opisany rozwój modeli DETR
 - [ ] M.2.5 Opisany rozwój modeli YOLO
 - [ ] M.2.6 Dodano plik .ipynb pokazujący zastosowanie modeli DETR i YOLO
+- [ ] M.2.7 Opisany fenomen DINOv3 oraz modeli FSL i ZSL
+- [ ] M.2.8 Dodano plik .ipynb pokazujący proste zastosowanie modeli FSL i ZSL
+- [ ] M.2.9 Opisane modele vLLM 
+- [ ] M.2.10 Dodano 
 
 ## M.3 - Ukończony podrozdział GAN
 
