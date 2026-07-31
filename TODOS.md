@@ -5,8 +5,6 @@ ZADANIA CYKLICZNE
 DO ZROBIENIA
 
 - [ ] Rozpisz milestones'y
-- [ ] Zapoznaj się z budową neuronu podaną w książce
-- [ ] Uzupełnij genezę 
 - [ ] Opisz słownie propagację w przód
 - [ ] Skombinuj wzory do propagacji w przód
 - [ ] Opisz słownie trenowanie poprzez propagację w tył
@@ -15,3 +13,5 @@ DO ZROBIENIA
 UKOŃCZONE
 - [x] Opisz w prostych słowach genezę pochodzenia sztucznych sieci neuronowych
 - [x] Wymień najważniejsze zastosowania sieci neuronowych we współczesnym świecie
+- [x] Zapoznaj się z budową neuronu podaną w książce
+- [x] Uzupełnij genezę 

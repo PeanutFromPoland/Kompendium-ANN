@@ -2,7 +2,7 @@
 
 ## M.1 - Ukończony rozdział Wprowadzenie
 
- - [ ] M.1.1 Opisana geneza pochodzenia 
+ - [x] M.1.1 Opisana geneza pochodzenia 
  - [x] M.1.2 Wymienione zastosowania DL 
  - [ ] M.1.3 Opisana propagacja w przód
  - [ ] M.1.4 Opisana propagacja w tył
