@@ -7,6 +7,7 @@
  - [ ] M.1.3 Opisana propagacja w przód
  - [ ] M.1.4 Opisana propagacja w tył
  - [ ] M.1.5 Dodano plik .ipynb z działającą siecią głęboką objaśniający poszczególne kwestie techniczne
+ - [ ] M.1.6 Opisano techniki zapobiegające overfittingowi modeli
  
 ## M.2 - Ukończony podrozdział CNN
 - [ ] M.2.1 Opisana zasada działania CNN
