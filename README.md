@@ -64,6 +64,48 @@ Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do pr
 
 Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga ma 104 neurony, a trzecia ma jeden neuron zwracający wynik od 0 do 1 oznaczający prawdopodobieństwo zawału serca. 
 
+Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element normalizacji. 
+
+Dostępne funkcje aktywacji:
+- Tanh 
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+- Sigmoid
+$$
+f(x)=\frac{1}{1+e^{-x}}
+$$
+- ELU
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+- ReLU*
+$$
+f(x)=
+\begin{cases}
+x, x>0\\
+\alpha x, x\le0
+\end{cases}
+$$
+- Leaky ReLU
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+- SELU
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+- SoftPlus
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+- Softmax*
+$$
+f(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+
+*- funkcje te są jedynymi dozwolonymi na warstwach wyjściowych
+
 ### Propagacja w tył (Backpropagation)
 
 ### Techniki zapobiegające overfittingowi
