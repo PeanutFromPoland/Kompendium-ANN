@@ -101,3 +101,4 @@ Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga m
 ## Źródła
 1. R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 9781617296185
 2. L. Tunstall, L. von Werra, T. Wolf. Przetwarzanie języka naturalnego z wykorzystaniem transformerów. Helion S.A. 2024. ISBN: 978-83-289-0711-9
+3. https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d. Dostęp z dnia 31.07.2026 godz. 10:30
