@@ -66,42 +66,54 @@ Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga m
 
 Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element normalizacji. 
 
+$$
+n(x) = a(\sum_i{w_i x_i + b})
+$$
+
 Dostępne funkcje aktywacji:
 - Tanh 
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x)=\frac{2}{1+e^{-2x}} - 1
 $$
 - Sigmoid
 $$
-f(x)=\frac{1}{1+e^{-x}}
+a(x)=\frac{1}{1+e^{-x}}
 $$
 - ELU
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x)=\begin{cases}
+x, & x>0\\
+\alpha (e^x-1), & x\le0
+\end{cases}
 $$
 - ReLU*
 $$
-f(x)=
-\begin{cases}
-x, x>0\\
-\alpha x, x\le0
-\end{cases}
+a(x)=max(0, x)
 $$
 - Leaky ReLU
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x)=
+\begin{cases}
+x, & x>0\\
+\alpha x, & x\le0
+\end{cases}
 $$
 - SELU
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x)=\lambda \begin{cases}
+x, & x>0\\
+\alpha (e^x-1), & x\le0
+\end{cases}
+\lambda \approx 1.05
+\alpha \approx 1.67 
 $$
 - SoftPlus
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x)=log(1 + e^x)
 $$
 - Softmax*
 $$
-f(x)=\frac{2}{1+e^{-2x}} - 1
+a(x_i)=\sigma(x_i)=\frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
 $$
 
 *- funkcje te są jedynymi dozwolonymi na warstwach wyjściowych
@@ -144,3 +156,4 @@ $$
 1. R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 9781617296185
 2. L. Tunstall, L. von Werra, T. Wolf. Przetwarzanie języka naturalnego z wykorzystaniem transformerów. Helion S.A. 2024. ISBN: 978-83-289-0711-9
 3. https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d. Dostęp z dnia 31.07.2026 godz. 10:30
+4. https://www.geeksforgeeks.org/machine-learning/activation-functions-neural-networks/. Dostęp z dnia 31.07.2026 godz. 11:05
