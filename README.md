@@ -7,7 +7,7 @@
     - [Geneza](#geneza)
     - [Zastosowania](#zastosowania)
     - [Propagacja w przód](#propagacja-w-przód)
-    - [Propagacja w tył (Backpropagation)](#propagacja-w-tył-backpropagation))
+    - [Propagacja w tył (Backpropagation)](#propagacja-w-tył-backpropagation)
 - [Architektury ANN](#architektury-ann)
     - [Sieci konwolucyjne (Convolutional Neural Network)](#sieci-konwolucyjne-convolutional-neural-network)
     - [Generatywne Sieci Adwersalne (Generative Adversal Network)](#generatywne-sieci-adwersalne-generative-adversal-network)
@@ -16,14 +16,12 @@
     - [GAT](#gat)
     - [Autoenkodery](#autoenkodery)
     - [Transformery](#transformery)
-    
-
   
 ---
 
 ## Wprowadzenie
 
-Rozdział ten opowiada o istocie sztucznych sieci neuronowych. Opisuje ich genezę, budowę, zastosowania we współczesnym świecie i mechanizmy, które zachodzą zarówno podczas trenowania, jak i ewaluacji modeli opartych o sztuczne sieci neuronowe.
+Rozdział ten opowiada o istocie  i zasadzie działania sztucznych sieci neuronowych. Opisuje ich genezę, budowę, zastosowania we współczesnym świecie i mechanizmy, które zachodzą zarówno podczas trenowania, jak i ewaluacji modeli opartych o sztuczne sieci neuronowe.
 
 
 ### Geneza
