@@ -9,7 +9,6 @@
 
 
  ## DO ZROBIENIA
-- [ ]  Opisz słownie propagację w przód
 - [ ]  Skombinuj wzory do propagacji w przód
 - [ ] Opisz słownie trenowanie poprzez propagację w tył
 - [ ] Skombinuj wzory do propagacji w tył
@@ -19,6 +18,7 @@
 - [ ] Rozpisz milestone M.6
 
 ## UKOŃCZONE
+- [x]  Opisz słownie propagację w przód
 - [x]  Rozpisz milestones'y M.2
 - [x]  Opisz w prostych słowach genezę pochodzenia sztucznych sieci neuronowych
 - [x] Wymień najważniejsze zastosowania sieci neuronowych we współczesnym świecie
