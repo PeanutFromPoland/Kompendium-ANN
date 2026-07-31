@@ -10,6 +10,7 @@
     - [Zastosowania](#zastosowania)
     - [Propagacja w przód](#propagacja-w-przód)
     - [Propagacja w tył (Backpropagation)](#propagacja-w-tył-backpropagation)
+    - [Techniki zapobiegające overfittingowi](#techniki-zapobiegające-overfittingowi)
   - [Architektury ANN](#architektury-ann)
     - [Sieci konwolucyjne (Convolutional Neural Network)](#sieci-konwolucyjne-convolutional-neural-network)
     - [Generatywne Sieci Adwersalne (Generative Adversal Network)](#generatywne-sieci-adwersalne-generative-adversal-network)
@@ -59,9 +60,18 @@ Sztuczne sieci neuronowe stosuje się m.in. do:
 
 ### Propagacja w przód
 
-Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje współczynnik spożycia alkoholu, współczynnik dziennej aktywności fizycznej, procent tkanki tłuszczowej w ciele, 
+Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje m.in. współczynnik spożycia alkoholu, palenie papierosów, czas aktywności fizycznej w tygodniu, BMI, ciśnienie krwi, etc.
+
+Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga ma 104 neurony, a trzecia ma jeden neuron zwracający wynik od 0 do 1 oznaczający prawdopodobieństwo zawału serca. 
 
 ### Propagacja w tył (Backpropagation)
+
+### Techniki zapobiegające overfittingowi
+
+- Regularyzacja lasso L1 i ridge L2
+- dropout
+- selekcja najistotniejszych zmiennych
+- 
 
 ## Architektury ANN
 
