@@ -59,7 +59,7 @@ Sztuczne sieci neuronowe stosuje się m.in. do:
 
 ### Propagacja w przód
 
-
+Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje współczynnik spożycia alkoholu, współczynnik dziennej aktywności fizycznej, procent tkanki tłuszczowej w ciele, 
 
 ### Propagacja w tył (Backpropagation)
 
