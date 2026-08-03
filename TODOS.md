@@ -3,8 +3,8 @@
 |Rodzaj      |Liczba |  
 |:-----------|:-----:|
 |Cykliczne   |1      |
-|Do zrobienia|8      |
-|Ukończono   |5      |
+|Do zrobienia|6      |
+|Ukończono   |7      |
 
 ## ZADANIA CYKLICZNE
 
@@ -12,7 +12,6 @@
 
 ## DO ZROBIENIA
 
-- [ ] Skombinuj wzory do propagacji w przód
 - [ ] Opisz słownie trenowanie poprzez propagację w tył
 - [ ] Skombinuj wzory do propagacji w tył
 - [ ] Rozpisz milestone M.3
@@ -22,6 +21,7 @@
 
 ## UKOŃCZONE
 
+- [x] Skombinuj wzory do propagacji w przód
 - [x]  Opisz słownie propagację w przód
 - [x]  Rozpisz milestones'y M.2
 - [x]  Opisz w prostych słowach genezę pochodzenia sztucznych sieci neuronowych
