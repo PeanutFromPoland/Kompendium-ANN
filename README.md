@@ -205,7 +205,6 @@ Oznaczenia:
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
-
 ### 1.5 Techniki zapobiegające overfittingowi
 
 - Dzielenie zbioru danych na podzbiór treningowy i testowy. W praktyce często wyznacza się też osobny zbiór walidacyjny, który pozwala na bieżąco oceniać postęp treningu epoka za epoką;

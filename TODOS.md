@@ -13,6 +13,7 @@
 ## DO ZROBIENIA
 
 - [ ] Opisz słownie trenowanie poprzez propagację w tył
+- [ ] Opisz szczegółowo techniki zapobiegające overfittingowi
 - [ ] Rozpisz milestone M.3
 - [ ] Rozpisz milestone M.4
 - [ ] Rozpisz milestone M.5
