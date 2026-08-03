@@ -2,25 +2,27 @@
 
 ## Spis treści
 
-- [1 Wprowadzenie](#1-wprowadzenie)
-  - [1.1 Geneza](#11-geneza)
-  - [1.2 Zastosowania](#12-zastosowania)
-  - [1.3 Propagacja w przód](#13-propagacja-w-przód)
-  - [1.4 Propagacja w tył (Backpropagation)](#14-propagacja-w-tył-backpropagation)
-  - [1.5 Techniki zapobiegające overfittingowi](#15-techniki-zapobiegające-overfittingowi)
-- [2 Architektury ANN](#2-architektury-ann)
-  - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
-  - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
-  - [2.3 Sieci Rekurencyjne (Recurrent Neural Network)](#23-sieci-rekurencyjne-recurrent-neural-network)
-  - [2.4 Długa Pamięć Krótkoterminowa LSTM (Long Short-Term Memory)](#24-długa-pamięć-krótkoterminowa-lstm-long-short-term-memory)
-  - [2.5 GAT](#25-gat)
-  - [2.6 Autoenkodery](#26-autoenkodery)
-  - [2.7 Transformery](#27-transformery)
-    - [2.7.1 Mechanizm atencji](#271-mechanizm-atencji)
-    - [2.7.2 Feed forward](#272-feed-forward)
-    - [2.7.3 Enkoder](#273-enkoder)
-    - [2.7.4 Dekoder](#274-dekoder)
-- [3. Bibliografia](#3-bibliografia)
+- [Sztuczne Sieci Neuronowe](#sztuczne-sieci-neuronowe)
+  - [Spis treści](#spis-treści)
+  - [1 Wprowadzenie](#1-wprowadzenie)
+    - [1.1 Geneza](#11-geneza)
+    - [1.2 Zastosowania](#12-zastosowania)
+    - [1.3 Propagacja w przód](#13-propagacja-w-przód)
+    - [1.4 Propagacja w tył (Backpropagation)](#14-propagacja-w-tył-backpropagation)
+    - [1.5 Techniki zapobiegające overfittingowi](#15-techniki-zapobiegające-overfittingowi)
+  - [2 Architektury ANN](#2-architektury-ann)
+    - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
+    - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
+    - [2.3 Sieci Rekurencyjne (Recurrent Neural Network)](#23-sieci-rekurencyjne-recurrent-neural-network)
+    - [2.4 Długa Pamięć Krótkoterminowa LSTM (Long Short-Term Memory)](#24-długa-pamięć-krótkoterminowa-lstm-long-short-term-memory)
+    - [2.5 GAT](#25-gat)
+    - [2.6 Autoenkodery](#26-autoenkodery)
+    - [2.7 Transformery](#27-transformery)
+      - [2.7.1 Mechanizm atencji](#271-mechanizm-atencji)
+      - [2.7.2 Feed forward](#272-feed-forward)
+      - [2.7.3 Enkoder](#273-enkoder)
+      - [2.7.4 Dekoder](#274-dekoder)
+  - [3 Bibliografia](#3-bibliografia)
   
 ---
 
@@ -133,6 +135,77 @@ $$
 
 ### 1.4 Propagacja w tył (Backpropagation)
 
+Propagacja w tył jest sposobem na wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
+
+1. Ustaw wagi wstępne w modelu;
+2. Użyj danych treningowych do przeprowadzenia propagacji w przód;
+3. Wynik z propagacji porównaj z docelowym wynikiem i na jego podstawie oblicz błąd modelu;
+4. Na podstawie wielkości błędu oblicz zmianę wag dla każdego neuronu warstwa po warstwie wstecz;
+5. Powtórz proces od kroku 2., jeżeli to była ostatnia iteracja lub błąd stał się akceptowalny.
+
+A więc propagacja w tył to nic innego jak przerzucanie błędu modelu od warstwy końcowej na sam początek. Błąd można obliczyć korzystając z:
+
+- różnicy;
+- błędu średniokwadratowego;
+- entropii krzyżowej.
+
+Aby można było oszacować zmianę wagi, skorzystamy z techniki gradientowej optymalizacji. Należy obliczyć gradient dla wyjścia modelu oraz przewidywanego wyjścia i odwrócić kierunek w stronę (lokalnego) optimum. Dla funkcji sigmoidalnej postaci:
+
+$$
+a(x)=\frac{1}{1+e^{-x}}
+$$
+
+pochodna funkcji to:
+
+$$
+\frac{d}{dx}a(x)=x(1-x)
+$$
+
+Dla funkcji ReLU:
+
+$$
+a(x)=max(0, x)
+$$
+
+pochodną funkcji jest:
+
+$$
+\frac{d}{dx}a(x)=\begin{cases}
+1, & x>0 \\
+0, & x<0
+\end{cases}
+$$
+
+Dla neuronu wyjściowego (warstwy wyjściowej) wzór na zmianę wag połączeń kończących się w nim jest następujący:
+
+$$
+\delta_w=e_w\frac{d}{dx}a(x) \\
+
+w_h = w_h + o_h^T \delta_w \lambda \\
+
+b_w = b_w + \sum \delta_w\\
+\delta_h = w_h \frac{d}{dx} a(o_h) \\
+
+w_i = w_i + o_i^T \delta_h \\
+b_h = b_h + \sum \delta_h\\
+
+$$
+
+Oznaczenia:
+
+- $o_w$ - wyjście;
+- $e_w$ - błąd na wyjściu;
+- $o_h$ - wyjście warstwy ukrytej;
+- $w_h$ - wagi połączeń między warstwą ukrytą, a wyjściem;
+- $\lambda$ - współczynnik uczenia;
+- $b_w$ - parametr bias w warstwie wyjściowej;
+- $o_i$ - wejście;
+- $w_i$ - wagi połączeń między wejściem, a warstwą ukrytą;
+- $b_h$ - parametr bias w warstwie ukrytej.
+
+Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
+
+
 ### 1.5 Techniki zapobiegające overfittingowi
 
 - Dzielenie zbioru danych na podzbiór treningowy i testowy. W praktyce często wyznacza się też osobny zbiór walidacyjny, który pozwala na bieżąco oceniać postęp treningu epoka za epoką;
@@ -140,7 +213,8 @@ $$
 - Regularyzacja L1 (lasso) i L2 (ridge);
 - Dropout;
 - Selekcja najistotniejszych zmiennych;
-- Wzbogacanie danych treningowych (data augmentation) - wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zastosowaniu mogłyby zaburzać pracę, ale podczas treningu uodporniają model na anomalie otrzymane na wejściu. Sprowadza się to do dodawania mniej lub bardziej regularnych szumów, zakrywania części obrazu i innych manipulacji.  
+- Wzbogacanie danych treningowych (data augmentation) - wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zastosowaniu mogłyby zaburzać pracę, ale podczas treningu uodporniają model na anomalie otrzymane na wejściu. Sprowadza się to do dodawania mniej lub bardziej regularnych szumów, zakrywania części obrazu i innych manipulacji;
+- Ograniczanie złożoności modelu.
 
 ## 2 Architektury ANN
 
@@ -172,3 +246,4 @@ $$
 2. L. Tunstall, L. von Werra, T. Wolf. Przetwarzanie języka naturalnego z wykorzystaniem transformerów. Helion S.A. 2024. ISBN: 978-83-289-0711-9
 3. D. Chuan-En-Lin, 8 Simple Techniques to Prevent Overfitting, [online]. Dostęp w Internecie: <https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d>. [dostęp: 31.07.2026]
 4. GeeksforGeeks, Activation Functions in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/activation-functions-neural-networks/>. [dostęp: 31.07.2026]
+5. GeeksforGeeks, Backpropagation in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/backpropagation-in-neural-network/>. [dostęp: 03.08.2026]
