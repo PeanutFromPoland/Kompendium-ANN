@@ -167,7 +167,11 @@ A więc propagacja w tył to nic innego jak przerzucanie błędu modelu od warst
 - kwadratu odległości euklidesowej;
 - entropii krzyżowej.
 
-Ponieważ w warstwie wyjściowej znajduje się najczęściej więcej niż jeden neuron, to posługujemy się dwoma ostatnimi metodami na obliczenie błędu. Odległość euklidesowa to po prostu błąd średniokwadratowy, lecz dla wektora parametrów wyjściowych.
+Ponieważ w warstwie wyjściowej znajduje się najczęściej więcej niż jeden neuron, to posługujemy się dwoma ostatnimi metodami na obliczenie błędu. Odległość euklidesowa to po prostu błąd średniokwadratowy, lecz dla wektora parametrów wyjściowych. Używany jest do szacowania zmiennych ilościowych. Zaś entropia krzyżowa jest używana do zmiennych jakościowych. Wyraża się ona wzorem:
+
+$$
+L(y,y')=-\sum_{i=1}^cy_ilog (y'_i)
+$$
 
 Aby można było oszacować zmianę wagi, skorzystamy z techniki gradientowej optymalizacji. Należy obliczyć gradient dla wyjścia modelu oraz przewidywanego wyjścia i odwrócić kierunek w stronę (lokalnego) optimum. Dla funkcji sigmoidalnej postaci:
 

@@ -3,8 +3,8 @@
 |Rodzaj      |Liczba |  
 |:-----------|:-----:|
 |Cykliczne   |1      |
-|Do zrobienia|6      |
-|Ukończono   |8      |
+|Do zrobienia|5      |
+|Ukończono   |9      |
 
 ## ZADANIA CYKLICZNE
 
@@ -12,7 +12,6 @@
 
 ## DO ZROBIENIA
 
-- [ ] Opisz słownie trenowanie poprzez propagację w tył
 - [ ] Opisz szczegółowo techniki zapobiegające overfittingowi
 - [ ] Rozpisz milestone M.3
 - [ ] Rozpisz milestone M.4
@@ -21,6 +20,7 @@
 
 ## UKOŃCZONE
 
+- [x] Opisz słownie trenowanie poprzez propagację w tył
 - [x] Skombinuj wzory do propagacji w tył
 - [x] Skombinuj wzory do propagacji w przód
 - [x] Opisz słownie propagację w przód
