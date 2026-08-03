@@ -3,7 +3,7 @@
 |Rodzaj      |Liczba |  
 |:-----------|:-----:|
 |Cykliczne   |1      |
-|Do zrobienia|5      |
+|Do zrobienia|6      |
 |Ukończono   |8      |
 
 ## ZADANIA CYKLICZNE

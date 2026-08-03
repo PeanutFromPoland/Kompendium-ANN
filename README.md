@@ -9,7 +9,6 @@
     - [1.2 Zastosowania](#12-zastosowania)
     - [1.3 Propagacja w przód](#13-propagacja-w-przód)
     - [1.4 Propagacja w tył (Backpropagation)](#14-propagacja-w-tył-backpropagation)
-    - [1.5 Techniki zapobiegające overfittingowi](#15-techniki-zapobiegające-overfittingowi)
   - [2 Architektury ANN](#2-architektury-ann)
     - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
     - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
@@ -22,7 +21,24 @@
       - [2.7.2 Feed forward](#272-feed-forward)
       - [2.7.3 Enkoder](#273-enkoder)
       - [2.7.4 Dekoder](#274-dekoder)
-  - [3 Bibliografia](#3-bibliografia)
+  - [3 Dodatki](#3-dodatki)
+    - [3.1 Optimizery](#31-optimizery)
+      - [Stochastyczna optymalizacja gradientowa (SGD)](#stochastyczna-optymalizacja-gradientowa-sgd)
+      - [SGD z pędem](#sgd-z-pędem)
+      - [RMS-prop](#rms-prop)
+      - [Adagrad](#adagrad)
+      - [AdaDelta](#adadelta)
+      - [Adam (Adaptive Moment Estimation)](#adam-adaptive-moment-estimation)
+      - [AdamW](#adamw)
+    - [3.2 Sposoby na ograniczenie overfittingu](#32-sposoby-na-ograniczenie-overfittingu)
+      - [Hold-out](#hold-out)
+      - [Walidacja krzyżowa](#walidacja-krzyżowa)
+      - [Regularyzacja](#regularyzacja)
+      - [Dropout](#dropout)
+      - [Eliminacja zmiennych nieistotnych](#eliminacja-zmiennych-nieistotnych)
+      - [Wzbogacanie danych treningowych (data augmentation)](#wzbogacanie-danych-treningowych-data-augmentation)
+      - [Ograniczanie złożoności modelu](#ograniczanie-złożoności-modelu)
+  - [4 Bibliografia](#4-bibliografia)
   
 ---
 
@@ -115,6 +131,7 @@ a(x)=\lambda \begin{cases}
 x, & x>0\\
 \alpha (e^x-1), & x\le0
 \end{cases}
+\\
 \lambda \approx 1.05
 \alpha \approx 1.67
 $$
@@ -147,7 +164,10 @@ A więc propagacja w tył to nic innego jak przerzucanie błędu modelu od warst
 
 - różnicy;
 - błędu średniokwadratowego;
+- kwadratu odległości euklidesowej;
 - entropii krzyżowej.
+
+Ponieważ w warstwie wyjściowej znajduje się najczęściej więcej niż jeden neuron, to posługujemy się dwoma ostatnimi metodami na obliczenie błędu. Odległość euklidesowa to po prostu błąd średniokwadratowy, lecz dla wektora parametrów wyjściowych.
 
 Aby można było oszacować zmianę wagi, skorzystamy z techniki gradientowej optymalizacji. Należy obliczyć gradient dla wyjścia modelu oraz przewidywanego wyjścia i odwrócić kierunek w stronę (lokalnego) optimum. Dla funkcji sigmoidalnej postaci:
 
@@ -182,8 +202,12 @@ $$
 \delta_w=e_w\frac{d}{dx}a(x) \\
 
 w_h = w_h + o_h^T \delta_w \lambda \\
-
 b_w = b_w + \sum \delta_w\\
+$$
+
+Dla warstwy ukrytej zmiany wag oblicza się w następujący sposób:
+
+$$
 \delta_h = w_h \frac{d}{dx} a(o_h) \\
 
 w_i = w_i + o_i^T \delta_h \\
@@ -204,16 +228,6 @@ Oznaczenia:
 - $b_h$ - parametr bias w warstwie ukrytej.
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
-
-### 1.5 Techniki zapobiegające overfittingowi
-
-- Dzielenie zbioru danych na podzbiór treningowy i testowy. W praktyce często wyznacza się też osobny zbiór walidacyjny, który pozwala na bieżąco oceniać postęp treningu epoka za epoką;
-- Walidacja krzyżowa - w przypadku większych modeli może okazać się zbyt kosztowna;
-- Regularyzacja L1 (lasso) i L2 (ridge);
-- Dropout;
-- Selekcja najistotniejszych zmiennych;
-- Wzbogacanie danych treningowych (data augmentation) - wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zastosowaniu mogłyby zaburzać pracę, ale podczas treningu uodporniają model na anomalie otrzymane na wejściu. Sprowadza się to do dodawania mniej lub bardziej regularnych szumów, zakrywania części obrazu i innych manipulacji;
-- Ograniczanie złożoności modelu.
 
 ## 2 Architektury ANN
 
@@ -239,10 +253,57 @@ Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego 
 
 #### 2.7.4 Dekoder
 
-## 3 Bibliografia
+## 3 Dodatki
 
-1. R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 9781617296185
+### 3.1 Optimizery
+
+#### Stochastyczna optymalizacja gradientowa (SGD)
+
+#### SGD z pędem
+
+#### RMS-prop
+
+#### Adagrad
+
+#### AdaDelta
+
+#### Adam (Adaptive Moment Estimation)
+
+#### AdamW
+
+### 3.2 Sposoby na ograniczenie overfittingu
+
+#### Hold-out
+
+Hold-out polega na dzieleniu zbioru danych na podzbiór treningowy i testowy. W praktyce często wyznacza się też osobny zbiór walidacyjny, który pozwala na bieżąco oceniać postęp treningu epoka za epoką.
+
+#### Walidacja krzyżowa
+
+w przypadku większych modeli może okazać się zbyt kosztowna.
+
+#### Regularyzacja
+
+- Regularyzacja L1 (lasso) i L2 (ridge);
+
+#### Dropout
+
+- Dropout;
+
+#### Eliminacja zmiennych nieistotnych
+
+#### Wzbogacanie danych treningowych (data augmentation)
+
+wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zastosowaniu mogłyby zaburzać pracę, ale podczas treningu uodporniają model na anomalie otrzymane na wejściu. Sprowadza się to do dodawania mniej lub bardziej regularnych szumów, zakrywania części obrazu i innych manipulacji;
+
+#### Ograniczanie złożoności modelu
+
+## 4 Bibliografia
+
+1. R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 978-16-172-9618-5
 2. L. Tunstall, L. von Werra, T. Wolf. Przetwarzanie języka naturalnego z wykorzystaniem transformerów. Helion S.A. 2024. ISBN: 978-83-289-0711-9
-3. D. Chuan-En-Lin, 8 Simple Techniques to Prevent Overfitting, [online]. Dostęp w Internecie: <https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d>. [dostęp: 31.07.2026]
-4. GeeksforGeeks, Activation Functions in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/activation-functions-neural-networks/>. [dostęp: 31.07.2026]
-5. GeeksforGeeks, Backpropagation in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/backpropagation-in-neural-network/>. [dostęp: 03.08.2026]
+3. D. Chuan-En-Lin. 8 Simple Techniques to Prevent Overfitting, [online]. Dostęp w Internecie: <https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d>. [dostęp: 31.07.2026]
+4. GeeksforGeeks. Activation Functions in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/activation-functions-neural-networks/>. [dostęp: 31.07.2026]
+5. GeeksforGeeks. Backpropagation in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/backpropagation-in-neural-network/>. [dostęp: 03.08.2026]
+6. Musstafa. Optimizers in Deep Learning, [online]. Dostęp w Internecie: <https://musstafa0804.medium.com/optimizers-in-deep-learning-7bf81fed78a0>. [dostęp: 03.08.2026]
+7. GeeksforGeeks. Optimization Rule in Deep Neural Networks, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/deep-learning/optimization-rule-in-deep-neural-networks/>. [dostęp: 03.08.2026]
+8. D. Altinel. Development of Deep Learning Optimizers: Approaches, Concepts, and Update Rules. Istanbul Medeniyet University. 22.09.2025. Dostęp w Internecie: <https://arxiv.org/pdf/2509.18396>.
