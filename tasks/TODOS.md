@@ -12,15 +12,16 @@
 
 ## DO ZROBIENIA
 
-- [ ] Przeorganizuj strukturę projektu
-- [ ] Opisz szczegółowo techniki zapobiegające overfittingowi
 - [ ] Rozpisz G
 - [ ] Rozpisz R
 - [ ] Rozpisz A
 - [ ] Rozpisz D
+- [ ] Opisz szczegółowo techniki zapobiegające overfittingowi
 
 ## UKOŃCZONE
 
+- [x] Przeorganizuj strukturę projektu
+- [x] Rozpisz S
 - [x] Opisz słownie trenowanie poprzez propagację w tył
 - [x] Skombinuj wzory do propagacji w tył
 - [x] Skombinuj wzory do propagacji w przód
