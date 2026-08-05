@@ -3,7 +3,7 @@
 |Rodzaj      |Liczba |  
 |:-----------|:-----:|
 |Cykliczne   |1      |
-|Do zrobienia|1      |
+|Do zrobienia|3      |
 |Ukończono   |15     |
 
 ## ZADANIA CYKLICZNE
@@ -13,9 +13,10 @@
 
 ## DO ZROBIENIA
 
-- [ ] Zrób `RULES.md` opisujący jak nazywać commity, branche, taski i proces akceptacji postępów
-- [ ] W ramach brancha `production` usuń `TODOS.md`
-- [ ] Dokonaj przeredagowania tekstu W
+- [ ] **W** Dokonaj przeredagowania tekstu
+- [ ] **!** Uzupełnij dziennik iteracji 09.08.2026
+- [ ] **!** Zrób `RULES.md` opisujący jak nazywać commity, branche, taski i proces akceptacji postępów
+- [ ] **!**  W ramach brancha `production` usuń `TODOS.md`
 
 ## UKOŃCZONE
 
