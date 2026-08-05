@@ -12,6 +12,8 @@
 
 ## DO ZROBIENIA
 
+- [ ] Zrób `RULES.md` opisujący jak nazywać commity, branche, taski i proces akceptacji postępów
+- [ ] W ramach brancha `production` usuń `TODOS.md`
 - [ ] Dokonaj przeredagowania tekstu W
 
 ## UKOŃCZONE
