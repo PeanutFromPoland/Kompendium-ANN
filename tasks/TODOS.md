@@ -9,6 +9,7 @@
 ## ZADANIA CYKLICZNE
 
 - [ ] Uzupełnij bibliografię i netografię
+- [ ] Uzupełnij dziennik użycia AI
 
 ## DO ZROBIENIA
 
