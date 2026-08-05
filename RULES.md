@@ -10,8 +10,12 @@
 2. Iteracje
    - Trwają one tydzień lub dwa. Datę końca iteracji ustala się w pliku `ITERATIONS.md` wraz z opisem wykonanych postępów i uwag;
 3. Branche
-   - Niech zaczynają się od taga wskazującego na mini-projekt np. [T];
+   - Niech zaczynają się od taga wskazującego na mini-projekt np. T;
    - Dalsza część nazwy niech odnosi się do zadania lub projektu.
+   - Przykłady:
+     - `T-Ogolne`
+     - `T-implementacja-enkodera`
+     - `G-implementacja-dyskryminatora`
 4. Wersjonowanie
    - Wersja stabilna to wersja, która przeszła pozytywnie proces CI/CD;
    - Wersja iteracyjna to wersja, która zawiera ostateczne wersje plików odnoszących się do zadań. Nie powinna ona zawierać roboczych postępów w innych zadaniach. W ramach tej wersji POWINIEN być uzupełniony dziennik iteracji `ITERATIONS.md`
