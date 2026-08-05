@@ -3,8 +3,8 @@
 |Rodzaj      |Liczba |  
 |:-----------|:-----:|
 |Cykliczne   |1      |
-|Do zrobienia|5      |
-|Ukończono   |9      |
+|Do zrobienia|1      |
+|Ukończono   |15     |
 
 ## ZADANIA CYKLICZNE
 
@@ -12,14 +12,14 @@
 
 ## DO ZROBIENIA
 
-- [ ] Rozpisz G
-- [ ] Rozpisz R
-- [ ] Rozpisz A
-- [ ] Rozpisz D
-- [ ] Opisz szczegółowo techniki zapobiegające overfittingowi
+- [ ] Dokonaj przeredagowania tekstu W
 
 ## UKOŃCZONE
 
+- [x] Rozpisz A
+- [x] Rozpisz G
+- [x] Rozpisz R
+- [x] Rozpisz D
 - [x] Przeorganizuj strukturę projektu
 - [x] Rozpisz S
 - [x] Opisz słownie trenowanie poprzez propagację w tył
