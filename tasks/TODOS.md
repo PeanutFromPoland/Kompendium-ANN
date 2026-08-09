@@ -13,9 +13,11 @@
 
 ## DO ZROBIENIA
 
+- [ ] Zaprojektuj system wieloagentowy do generowania prezentacji
+- [ ] Popraw kod treningu sieci neuronowej
+- [ ] Dokonaj przeredagowania tekstu W
 - [ ] Zrób `RULES.md` opisujący jak nazywać commity, branche, taski i proces akceptacji postępów
 - [ ] W ramach brancha `production` usuń `TODOS.md`
-- [ ] Dokonaj przeredagowania tekstu W
 
 ## UKOŃCZONE
 
