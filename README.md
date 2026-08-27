@@ -244,39 +244,64 @@ $$
 \end{cases}
 $$
 
+Oznaczenia:
+
+$N$ - liczba warstw w sieci włącznie z warstwą wejściową i wyjściową \
+$H$ - liczba warstw ukrytych
+
+$M$ - liczba neuronów w warstwie ukrytej (przyjmijmy, że warstwy ukryte mają tyle samo neuronów)\
+$I$ - liczba neuronów w warstwie wejścia \
+$O$ - liczba neuronów w warstwie wyjścia
+
+$w_{j,l}^{i,k}$, $i\lt j$ - waga pomiędzy $k$-tym neuronem $i$-tej warstwy, a $l$-tym neuronem $j$-tej warstwy\
+$b_{i,j}$ - szum (bias) w $j$-tym neuronie $i$-tej warstwy\
+$n_{i,j}$ - wartość sygnału neuronu w $j$-tym neuronie w $i$-tej warstwie
+
+$\delta_{j,l}^{i,k}$, $i\lt j$ - zmiana wagi pomiędzy $k$-tym neuronem $i$-tej warstwy, a $l$-tym neuronem $j$-tej warstwy\
+$e_{i,j}$ - błąd w $j$-tym neuronie $i$-tej warstwy\
+$\lambda$ - współczynnik uczenia
+
+Przyjmijmy, że:
+
+$N=M=3$
+
+$I=2$
+
+$O=1$
+
 Dla neuronu wyjściowego (warstwy wyjściowej) wzór na zmianę wag połączeń kończących się w nim jest następujący:
 
-$$
-\delta_w=e_w\frac{d}{dx}f(x) \\
+$
+\delta_{3,1}^{2,k}=e_{3,1} \cdot \frac{d}{dx}f(x)
+$
 
-w_h = w_h + o_h^T \delta_w \lambda \\
-b_w = b_w + \sum \delta_w\\
-$$
+$
+w_{3,1}^{2,k} = w_{3,1}^{2,k} + n_{3,1}^T \cdot \delta_{3,1}^{2,k} \cdot \lambda
+$
+
+$
+b_{3,1} = b_{3,1} + \sum_{k=1}^M \delta_{3,1}^{2,k}\\
+$
+
+$k=\overline{1,M}$
 
 Dla warstwy ukrytej zmiany wag oblicza się w następujący sposób:
 
-$$
-\delta_h = w_h \frac{d}{dx} a(o_h) \\
+$
+\delta_{2,l}^{1,k} = w_{2,l}^{1,k} \cdot \frac{d}{dx} f(n_{1,l}) \\
+$
 
-w_i = w_i + o_i^T \delta_h \\
-b_h = b_h + \sum \delta_h\\
+$
+w_{2,l}^{1,k} = w_{2,l}^{1,k} + n_{1,l}^T \cdot \delta_{2,l}^{1,k}
+$
 
-$$
+$
+b_{1,l} = b_{1,l} + \sum_{k=1}^M \delta_{2,l}^{1,k}\\
+$
 
-Oznaczenia:
+$k,l=\overline{1,M}$
 
-- $o_w$ - wyjście;
-- $e_w$ - błąd na wyjściu;
-- $o_h$ - wyjście warstwy ukrytej;
-- $w_h$ - wagi połączeń między warstwą ukrytą, a wyjściem;
-- $\lambda$ - współczynnik uczenia;
-- $b_w$ - parametr bias w warstwie wyjściowej;
-- $o_i$ - wejście;
-- $w_i$ - wagi połączeń między wejściem, a warstwą ukrytą;
-- $b_h$ - parametr bias w warstwie ukrytej.
-- $\delta$ - wielkość zmiany danej wagi, która pozwoli znaleźć się w minimum lokalnym
-
-Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
+Współczynnik uczenia ustawia się po to, aby parametry miały szansę odnaleźć lepsze optimum lokalne. Bez tego model natychmiast wpadnie w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
 #### Interpretacje sieci głębokich
 
