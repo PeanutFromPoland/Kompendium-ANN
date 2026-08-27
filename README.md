@@ -192,9 +192,9 @@ $$
 n(x) = f(\sum_i{w_i x_i + b})
 $$
 
-Sygnały z ostatniej warstwy ukrytej dochodzą do warstwy wyjściowej. 
+Sygnały z ostatniej warstwy ukrytej dochodzą do warstwy wyjściowej.
 
-Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. Sygnał nie jest propagowany ani w kierunku tych samych neuronów w warstwie, ani do tyłu. W innych architekturach np. sieciach rekurencyjnych lub rezydualnych sygnał może być przekazywany od neuronu do neuronu lub może je pomijać.
+Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. Sygnał nie jest propagowany ani w kierunku tych samych neuronów w warstwie, ani do tyłu. W innych architekturach np. sieciach rekurencyjnych lub rezydualnych sygnał może być przekazywany od neuronu do neuronu w obrębie warstwy lub może je pomijać.
 
 #### Propagacja w tył (Backpropagation)
 
