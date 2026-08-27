@@ -6,11 +6,17 @@
   - [Spis treści](#spis-treści)
   - [1 Wprowadzenie](#1-wprowadzenie)
     - [1.1 Geneza](#11-geneza)
+    - [1.2 Perceptron](#12-perceptron)
+    - [1.2 Funkcje aktywacji](#12-funkcje-aktywacji)
+      - [W przeszłości](#w-przeszłości)
+      - [ReLU](#relu)
+      - [Lista funkcji aktywacji](#lista-funkcji-aktywacji)
+    - [1.3 Wielowarstwowy perceptron - sieć głęboka](#13-wielowarstwowy-perceptron---sieć-głęboka)
       - [Interpretacje sieci głębokich](#interpretacje-sieci-głębokich)
-    - [1.2 Zastosowania](#12-zastosowania)
-    - [1.3 Propagacja w przód](#13-propagacja-w-przód)
-    - [1.4 Propagacja w tył (Backpropagation)](#14-propagacja-w-tył-backpropagation)
-    - [1.5 Istota treningu ANN](#15-istota-treningu-ann)
+    - [1.4 Zastosowania](#14-zastosowania)
+    - [1.5 Propagacja w przód](#15-propagacja-w-przód)
+    - [1.6 Propagacja w tył (Backpropagation)](#16-propagacja-w-tył-backpropagation)
+    - [1.7 Istota treningu ANN](#17-istota-treningu-ann)
   - [2 Architektury ANN](#2-architektury-ann)
     - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
     - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
@@ -51,57 +57,70 @@ Rozdział ten opowiada o istocie i zasadzie działania sztucznych sieci neuronow
 
 Pytania, na które poznasz odpowiedź w tym rozdziale.
 
+- Jak zbudowane są głębokie sieci neuronowe?
 - Na czym polega trening sieci neuronowej?
 - Na czym polega trudność w wytrenowaniu sieci neuronowej?
 - Jak można interpretować budowę sieci głębokich?
 
 ### 1.1 Geneza
 
-Bezpośrednią inspiracją dla powstania sztucznych sieci neuronowych (które będę skrótowo odtąd nazywać ANN) jest budowa neuronów w ludzkim mózgu.
+Bezpośrednią inspiracją dla powstania sztucznych sieci neuronowych (które będę skrótowo odtąd nazywać ANN - Artificial Neural Network) jest budowa neuronów w ludzkim mózgu.
 
 ![image](imgs/neuron.png)
 
-Neurony składają się z dendrytów, jądra komórkowego, ciała komórkowego, aksonu i synaps. Dendrydy otrzymują sygnały z sąsiednich neuronów i przekazują je do ciała i jądra komórkowego, które modyfikują sygnał. Akson przekazuje nowy sygnał do synaps podłączonych do dendrydów innych neuronów.
+Neurony w mózgu składają się z dendrytów, jądra komórkowego, ciała komórkowego, aksonu i synaps. Dendrydy otrzymują sygnały z sąsiednich neuronów i przekazują je do ciała i jądra komórkowego, które modyfikują sygnał. Akson przekazuje nowy sygnał do synaps podłączonych do dendrydów innych neuronów.
 
 Sygnały w mózgu przechodzą między neuronami, w których poddawane są indywidualnym procesom transformacji. Siła sygnału wyjściowego neuronu zależy od siły sygnałów wejściowych.
+
+### 1.2 Perceptron
 
 Twórcy koncepcji ANN zaproponowali, aby siła sygnałów była reprezentowana przez liczby rzeczywiste, a procesy transformacji polegały na obliczaniu wartości funkcji liniowej zawierającej tyle samo zmiennych, co wejść do danego sztucznego neuronu i zastosowaniu na nich wag, które pozwolą zbalansować wpływ różnych sygnałów na wielkość sygnału wyjściowego. Jest to bardzo ważne, gdyż bez tego pewne części ANN mogłyby w sposób niezamierzony (i na dodatek nieuczciwy) wpływać na wynik końcowy.
 
 Przyjmijmy, że sieć neuronowa została wytrenowana do szacowania wartości mieszkania w zależności od metrażu, odległości od centrum i przeciętnych zarobków w tym mieście. Łatwo da się dostrzec, że dziedzina zmiennej opisującej przeciętne pensje mieści się w przedziale kilku, kilkunastu tysięcy. Gdyby nie stosować wag, to ta właśnie zmienna "przejęłaby kontrolę" nad modelem, co jest absolutnie niepożądane. Chcemy, aby każda zmienna w modelu miała wstępnie te same szanse.
 
-Jest jeszcze jedna rzecz, która odróżnia sieci głębokie od zwyczajnych funkcji liniowych zwanych perceptronami. Bez tej rzeczy sieci głębokie dałoby się uprościć do funkcji liniowych i nie miałyby żadnego zastosowania. Ten element odpowiada za nieliniowość w sieciach głębokich. Jest nim funkcja aktywacji.
+Tak zbudowany neuron nazywamy perceptronem.
 
-Funkcja aktywacji jest funkcją, która dla sumy wartości sygnałów i szumu dodawanego przez dany neuron zwraca nieliniowy sygnał na wyjście. Umożliwia ona odwzorowywanie nieliniowych zależności pomiędzy zmiennymi zależnymi (reprezentowanymi przez neurony warstwy końcowej), a zmiennymi wejściowymi (reprezentowanymi przez neurony w warstwie wejściowej). Dzięki temu ANN-y mogą uczyć się przewidywania nieliniowych zależności. W przeszłości używano funkcji trygonometrycznych takich jak funkcja sigmoidalna i tangens hiperboliczny (tanh). Niestety, badacze zauważyli, że powodują one kilka problemów.
+Jest jeszcze jedna rzecz, która odróżnia perceptron od zwyczajnych funkcji liniowych. Bez tej rzeczy sieci głębokie dałoby się uprościć do funkcji liniowych i nie miałyby żadnego zastosowania. Ten element odpowiada za nieliniowość w sieciach głębokich. Jest nim funkcja aktywacji.
+
+### 1.2 Funkcje aktywacji
+
+Funkcja aktywacji jest funkcją, która dla sumy wartości sygnałów i szumu dodawanego przez dany neuron zwraca nieliniowy sygnał na wyjście. Umożliwia ona odwzorowywanie nieliniowych zależności pomiędzy zmiennymi zależnymi (reprezentowanymi przez neurony warstwy końcowej), a zmiennymi wejściowymi (reprezentowanymi przez neurony w warstwie wejściowej). Dzięki temu ANN-y mogą uczyć się przewidywania nieliniowych zależności.
+
+#### W przeszłości
+
+W przeszłości używano funkcji trygonometrycznych takich jak funkcja sigmoidalna i tangens hiperboliczny (tanh). Niestety, badacze zauważyli, że powodują one kilka problemów.
 
 1. Wykazują tendencję do nasycania się, co objawia się tym, że nieważne czy wejście ma dużą wartość, czy większą to zwraca ona bardzo małą pochodną, co straszliwie spowalnia trening;
 2. Niewielkie wartości pochodnych dążące do 0 są piętą achillesową dla komputerów. Błędy numeryczne kumulują się wraz z obliczaniem kolejnych warstw, co utrudnia sprawne korygowanie wag.
 
-Aby rozwiązać oba te problemy zaproponowano funkcję ReLU. Dla wartości niezerowych jest liniowa, ale dla ujemnych wartości zwraca zero. Dzięki temu nie nasyca się, a ponadto wykazuje się prostą pochodną, która eliminuje problem błędów numerycznych. Oczywiście są różne wariacje na temat funkcji ReLU, są jeszcze funkcje oparte o stałą $e$, ale na początek warto znać kilka podstawowych funkcji aktywacji.
+#### ReLU
 
-Lista funkcji aktywacji:
+Aby rozwiązać oba te problemy zaproponowano funkcję ReLU (Rectified Linear Unit). Dla wartości niezerowych jest liniowa, ale dla ujemnych wartości zwraca zero. Dzięki temu nie nasyca się, a ponadto wykazuje się prostą pochodną, która eliminuje problem błędów numerycznych. Oczywiście są różne wariacje na temat funkcji ReLU, są jeszcze funkcje oparte o stałą $e$, ale na początek warto znać kilka podstawowych funkcji aktywacji.
+
+#### Lista funkcji aktywacji
 
 - Tanh
 
 $$
-a(x)=\frac{2}{1+e^{-2x}} - 1
+f(x)=\frac{2}{1+e^{-2x}} - 1
 $$
 
 - Sigmoid
 
 $$
-a(x)=\frac{1}{1+e^{-x}}
+f(x)=\frac{1}{1+e^{-x}}
 $$
 
 - ReLU*
 
 $$
-a(x)=max(0, x)
+f(x)=max(0, x)
 $$
 
 - ELU
 
 $$
-a(x)=\begin{cases}
+f(x)=\begin{cases}
 x, & x>0\\
 \alpha (e^x-1), & x\le0
 \end{cases}
@@ -110,7 +129,7 @@ $$
 - Leaky ReLU
 
 $$
-a(x)=
+f(x)=
 \begin{cases}
 x, & x>0\\
 \alpha x, & x\le0
@@ -120,7 +139,7 @@ $$
 - SELU
 
 $$
-a(x)=\lambda \begin{cases}
+f(x)=\lambda \begin{cases}
 x, & x>0\\
 \alpha (e^x-1), & x\le0
 \end{cases}
@@ -133,16 +152,20 @@ $$
 - SoftPlus
 
 $$
-a(x)=log(1 + e^x)
+f(x)=log(1 + e^x)
 $$
 
 - Softmax*
 
 $$
-a(x_i)=\sigma(x_i)=\frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
+f(x_i)=\sigma(x_i)=\frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
 $$
 
 *- funkcje te są jedynymi dozwolonymi na warstwach wyjściowych
+
+### 1.3 Wielowarstwowy perceptron - sieć głęboka
+
+Sieci zbudowane są z wielu takich perceptronów ułożonych równolegle ze sobą tworząc warstwy sieci. Warstwy sieci z kolei są połączone szeregowo, co czyni je siecią głęboką. Najprostszą postacią sieci głębokiej jest perceptron wielowarstwowy, w skrócie MLP (Multi Layer Perceptron). W dalszej części kompendium pojawi się sieć sprzężenia do przodu (Feedforward Neural Network), która jest w zasadzie tym samym, z tym że nazwa nawiązuje do tego, jak model dokonuje obliczeń.
 
 #### Interpretacje sieci głębokich
 
@@ -164,7 +187,7 @@ $K$ - liczba warstw pośrednich
 
 W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
 
-### 1.2 Zastosowania
+### 1.4 Zastosowania
 
 Sztuczne sieci neuronowe stosuje się m.in. do:
 
@@ -177,7 +200,7 @@ Sztuczne sieci neuronowe stosuje się m.in. do:
 - generowania filmów i obrazów
 - wspomagania podejmowania decyzji w złożonych środowiskach operacyjnych
 
-### 1.3 Propagacja w przód
+### 1.5 Propagacja w przód
 
 Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje m.in. współczynnik spożycia alkoholu, palenie papierosów, czas aktywności fizycznej w tygodniu, BMI, ciśnienie krwi, etc.
 
@@ -186,10 +209,10 @@ Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga m
 Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element nieliniowości.
 
 $$
-n(x) = a(\sum_i{w_i x_i + b})
+n(x) = f(\sum_i{w_i x_i + b})
 $$
 
-### 1.4 Propagacja w tył (Backpropagation)
+### 1.6 Propagacja w tył (Backpropagation)
 
 Propagacja w tył jest algorytmem umożliwiającym wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
 
@@ -221,25 +244,25 @@ $y'_i$ - Przewidywane prawdopodobieństwo przynależności do klasy *i*
 Aby można było oszacować zmianę wagi, skorzystamy z techniki gradientowej optymalizacji. Należy obliczyć gradient dla wyjścia modelu oraz przewidywanego wyjścia i odwrócić kierunek w stronę (lokalnego) optimum. Dla funkcji sigmoidalnej postaci:
 
 $$
-a(x)=\frac{1}{1+e^{-x}}
+f(x)=\frac{1}{1+e^{-x}}
 $$
 
 pochodna funkcji to:
 
 $$
-\frac{d}{dx}a(x)=a(x)(1-a(x))
+\frac{d}{dx}f(x)=f(x)(1-f(x))=\frac{e^{-x}}{(1+e^{-x})^2}
 $$
 
 Dla funkcji ReLU:
 
 $$
-a(x)=max(0, x)
+f(x)=max(0, x)
 $$
 
 pochodną funkcji jest:
 
 $$
-\frac{d}{dx}a(x)=\begin{cases}
+\frac{d}{dx}f(x)=\begin{cases}
 1, & x>0 \\
 0, & x<0
 \end{cases}
@@ -248,7 +271,7 @@ $$
 Dla neuronu wyjściowego (warstwy wyjściowej) wzór na zmianę wag połączeń kończących się w nim jest następujący:
 
 $$
-\delta_w=e_w\frac{d}{dx}a(x) \\
+\delta_w=e_w\frac{d}{dx}f(x) \\
 
 w_h = w_h + o_h^T \delta_w \lambda \\
 b_w = b_w + \sum \delta_w\\
@@ -279,7 +302,7 @@ Oznaczenia:
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
-### 1.5 Istota treningu ANN
+### 1.7 Istota treningu ANN
 
 Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne (ewentualnie minimum lokalne w dopuszczalnym marginesie niedokładności). Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego.
 
