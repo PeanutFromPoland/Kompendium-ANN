@@ -6,9 +6,11 @@
   - [Spis treści](#spis-treści)
   - [1 Wprowadzenie](#1-wprowadzenie)
     - [1.1 Geneza](#11-geneza)
+      - [Interpretacje sieci głębokich](#interpretacje-sieci-głębokich)
     - [1.2 Zastosowania](#12-zastosowania)
     - [1.3 Propagacja w przód](#13-propagacja-w-przód)
     - [1.4 Propagacja w tył (Backpropagation)](#14-propagacja-w-tył-backpropagation)
+    - [1.5 Istota treningu ANN](#15-istota-treningu-ann)
   - [2 Architektury ANN](#2-architektury-ann)
     - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
     - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
@@ -38,6 +40,7 @@
       - [Eliminacja zmiennych nieistotnych](#eliminacja-zmiennych-nieistotnych)
       - [Wzbogacanie danych treningowych (data augmentation)](#wzbogacanie-danych-treningowych-data-augmentation)
       - [Ograniczanie złożoności modelu](#ograniczanie-złożoności-modelu)
+    - [3.3 Architektury modeli STT i TTS](#33-architektury-modeli-stt-i-tts)
   - [4 Bibliografia](#4-bibliografia)
   
 ---
@@ -45,6 +48,12 @@
 ## 1 Wprowadzenie
 
 Rozdział ten opowiada o istocie i zasadzie działania sztucznych sieci neuronowych. Opisuje ich genezę, budowę, zastosowania we współczesnym świecie i mechanizmy, które zachodzą zarówno podczas trenowania, jak i ewaluacji modeli opartych o sztuczne sieci neuronowe.
+
+Pytania, na które poznasz odpowiedź w tym rozdziale.
+
+- Na czym polega trening sieci neuronowej?
+- Na czym polega trudność w wytrenowaniu sieci neuronowej?
+- Jak można interpretować budowę sieci głębokich?
 
 ### 1.1 Geneza
 
@@ -56,9 +65,104 @@ Neurony składają się z dendrytów, jądra komórkowego, ciała komórkowego, 
 
 Sygnały w mózgu przechodzą między neuronami, w których poddawane są indywidualnym procesom transformacji. Siła sygnału wyjściowego neuronu zależy od siły sygnałów wejściowych.
 
-Twórcy koncepcji ANN zaproponowali, aby siła sygnałów była reprezentowana przez liczby rzeczywiste, a procesy transformacji polegały na obliczaniu wartości funkcji liniowej zawierającej tyle samo zmiennych, co wejść do danego sztucznego neuronu i zastosowaniu na niej funkcji aktywacji, która pozwoli znormalizować wartość siły sygnału w sieci. Jest to bardzo ważne, gdyż bez tego pewne części ANN mogłyby w sposób niezamierzony (i na dodatek nieuczciwy) wpływać na wynik końcowy.
+Twórcy koncepcji ANN zaproponowali, aby siła sygnałów była reprezentowana przez liczby rzeczywiste, a procesy transformacji polegały na obliczaniu wartości funkcji liniowej zawierającej tyle samo zmiennych, co wejść do danego sztucznego neuronu i zastosowaniu na nich wag, które pozwolą zbalansować wpływ różnych sygnałów na wielkość sygnału wyjściowego. Jest to bardzo ważne, gdyż bez tego pewne części ANN mogłyby w sposób niezamierzony (i na dodatek nieuczciwy) wpływać na wynik końcowy.
 
-Przyjmijmy, że sieć neuronowa została wytrenowana do szacowania wartości mieszkania w zależności od metrażu, odległości od centrum i przeciętnych zarobków w tym mieście. Łatwo da się dostrzec, że dziedzina zmiennej opisującej przeciętne pensje mieści się w przedziale kilku, kilkunastu tysięcy. Gdyby nie stosować normalizacji zmiennych, to ta właśnie zmienna "przejęłaby kontrolę" nad modelem, co jest absolutnie niepożądane. Chcemy, aby każda zmienna w modelu miała wstępnie te same szanse.
+Przyjmijmy, że sieć neuronowa została wytrenowana do szacowania wartości mieszkania w zależności od metrażu, odległości od centrum i przeciętnych zarobków w tym mieście. Łatwo da się dostrzec, że dziedzina zmiennej opisującej przeciętne pensje mieści się w przedziale kilku, kilkunastu tysięcy. Gdyby nie stosować wag, to ta właśnie zmienna "przejęłaby kontrolę" nad modelem, co jest absolutnie niepożądane. Chcemy, aby każda zmienna w modelu miała wstępnie te same szanse.
+
+Jest jeszcze jedna rzecz, która odróżnia sieci głębokie od zwyczajnych funkcji liniowych zwanych perceptronami. Bez tej rzeczy sieci głębokie dałoby się uprościć do funkcji liniowych i nie miałyby żadnego zastosowania. Ten element odpowiada za nieliniowość w sieciach głębokich. Jest nim funkcja aktywacji.
+
+Funkcja aktywacji jest funkcją, która dla sumy wartości sygnałów i szumu dodawanego przez dany neuron zwraca nieliniowy sygnał na wyjście. Umożliwia ona odwzorowywanie nieliniowych zależności pomiędzy zmiennymi zależnymi (reprezentowanymi przez neurony warstwy końcowej), a zmiennymi wejściowymi (reprezentowanymi przez neurony w warstwie wejściowej). Dzięki temu ANN-y mogą uczyć się przewidywania nieliniowych zależności. W przeszłości używano funkcji trygonometrycznych takich jak funkcja sigmoidalna i tangens hiperboliczny (tanh). Niestety, badacze zauważyli, że powodują one kilka problemów.
+
+1. Wykazują tendencję do nasycania się, co objawia się tym, że nieważne czy wejście ma dużą wartość, czy większą to zwraca ona bardzo małą pochodną, co straszliwie spowalnia trening;
+2. Niewielkie wartości pochodnych dążące do 0 są piętą achillesową dla komputerów. Błędy numeryczne kumulują się wraz z obliczaniem kolejnych warstw, co utrudnia sprawne korygowanie wag.
+
+Aby rozwiązać oba te problemy zaproponowano funkcję ReLU. Dla wartości niezerowych jest liniowa, ale dla ujemnych wartości zwraca zero. Dzięki temu nie nasyca się, a ponadto wykazuje się prostą pochodną, która eliminuje problem błędów numerycznych. Oczywiście są różne wariacje na temat funkcji ReLU, są jeszcze funkcje oparte o stałą $e$, ale na początek warto znać kilka podstawowych funkcji aktywacji.
+
+Lista funkcji aktywacji:
+
+- Tanh
+
+$$
+a(x)=\frac{2}{1+e^{-2x}} - 1
+$$
+
+- Sigmoid
+
+$$
+a(x)=\frac{1}{1+e^{-x}}
+$$
+
+- ReLU*
+
+$$
+a(x)=max(0, x)
+$$
+
+- ELU
+
+$$
+a(x)=\begin{cases}
+x, & x>0\\
+\alpha (e^x-1), & x\le0
+\end{cases}
+$$
+
+- Leaky ReLU
+
+$$
+a(x)=
+\begin{cases}
+x, & x>0\\
+\alpha x, & x\le0
+\end{cases}
+$$
+
+- SELU
+
+$$
+a(x)=\lambda \begin{cases}
+x, & x>0\\
+\alpha (e^x-1), & x\le0
+\end{cases}
+$$
+$$
+\lambda \approx 1.05
+\alpha \approx 1.67
+$$
+
+- SoftPlus
+
+$$
+a(x)=log(1 + e^x)
+$$
+
+- Softmax*
+
+$$
+a(x_i)=\sigma(x_i)=\frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
+$$
+
+*- funkcje te są jedynymi dozwolonymi na warstwach wyjściowych
+
+#### Interpretacje sieci głębokich
+
+Pierwszą interpretacją, jaką proponuje R. Hurbans w [RHu] jest to, że każda kolejna warstwa ANN tworzy coraz bardziej korelujące dane, które wreszcie stają się w pełni skorelowane na warstwie wyjściowej.
+
+Drugą interpretacją zaproponowaną w [Wel] jest to, że sieć neuronowa odwzorowuje mapa regionów decyzyjnych oddzielonych granicami decyzyjnymi. Im więcej neuronów, tym więcej granic i obszarów, lecz im więcej warstw oddzielonych funkcją ReLU, tym więcej takich obszarów i tym mniejszy koszt obliczeniowy. Dobrze oddaje to wzór na maksymalną liczbę regionów:
+
+$$
+
+N = (\frac{D}{D_i} + 1)^{D_i (K-1)}(\frac{D^2+D+2}{2})
+
+$$
+
+Gdzie:
+
+$D_i$ - liczba neuronów w warstwie wejściowej \
+$D$ - liczba neuronów na warstwę\
+$K$ - liczba warstw pośrednich
+
+W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
 
 ### 1.2 Zastosowania
 
@@ -79,85 +183,20 @@ Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do pr
 
 Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga ma 104 neurony, a trzecia ma jeden neuron zwracający wynik od 0 do 1 oznaczający prawdopodobieństwo zawału serca.
 
-Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element normalizacji.
+Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element nieliniowości.
 
 $$
 n(x) = a(\sum_i{w_i x_i + b})
 $$
 
-Dostępne funkcje aktywacji:
-
-- Tanh
-
-$$
-a(x)=\frac{2}{1+e^{-2x}} - 1
-$$
-
-- Sigmoid
-
-$$
-a(x)=\frac{1}{1+e^{-x}}
-$$
-
-- ELU
-
-$$
-a(x)=\begin{cases}
-x, & x>0\\
-\alpha (e^x-1), & x\le0
-\end{cases}
-$$
-
-- ReLU*
-
-$$
-a(x)=max(0, x)
-$$
-
-- Leaky ReLU
-
-$$
-a(x)=
-\begin{cases}
-x, & x>0\\
-\alpha x, & x\le0
-\end{cases}
-$$
-
-- SELU
-
-$$
-a(x)=\lambda \begin{cases}
-x, & x>0\\
-\alpha (e^x-1), & x\le0
-\end{cases}
-\\
-\lambda \approx 1.05
-\alpha \approx 1.67
-$$
-
-- SoftPlus
-
-$$
-a(x)=log(1 + e^x)
-$$
-
-- Softmax*
-
-$$
-a(x_i)=\sigma(x_i)=\frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
-$$
-
-*- funkcje te są jedynymi dozwolonymi na warstwach wyjściowych
-
 ### 1.4 Propagacja w tył (Backpropagation)
 
-Propagacja w tył jest sposobem na wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
+Propagacja w tył jest algorytmem umożliwiającym wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
 
 1. Ustaw wagi wstępne w modelu;
 2. Użyj danych treningowych do przeprowadzenia propagacji w przód;
 3. Wynik z propagacji porównaj z docelowym wynikiem i na jego podstawie oblicz błąd modelu;
-4. Na podstawie wielkości błędu oblicz zmianę wag dla każdego neuronu warstwa po warstwie wstecz;
+4. Na podstawie wielkości błędu oblicz zmianę wag dla każdego neuronu warstwa po warstwie idąc wstecz;
 5. Powtórz proces od kroku 2., jeżeli to była ostatnia iteracja lub błąd stał się akceptowalny.
 
 A więc propagacja w tył to nic innego jak przerzucanie błędu modelu od warstwy końcowej na sam początek. Błąd można obliczyć korzystając z:
@@ -167,11 +206,17 @@ A więc propagacja w tył to nic innego jak przerzucanie błędu modelu od warst
 - kwadratu odległości euklidesowej;
 - entropii krzyżowej.
 
-Ponieważ w warstwie wyjściowej znajduje się najczęściej więcej niż jeden neuron, to posługujemy się dwoma ostatnimi metodami na obliczenie błędu. Odległość euklidesowa to po prostu błąd średniokwadratowy, lecz dla wektora parametrów wyjściowych. Używany jest do szacowania zmiennych ilościowych. Zaś entropia krzyżowa jest używana do zmiennych jakościowych. Wyraża się ona wzorem:
+Ponieważ w warstwie wyjściowej znajduje się najczęściej więcej niż jeden neuron, a problemy są częściej z gatunku problemów klasyfikacyjnych, to posługujemy się raczej tą ostatnią metodą na obliczenie błędu. Odległość euklidesowa to po prostu błąd średniokwadratowy, lecz dla wektora parametrów wyjściowych. Używany jest do szacowania zmiennych ilościowych. Zaś entropia krzyżowa jest używana do zmiennych jakościowych (kategorialnych). Wyraża się ona wzorem:
 
 $$
 L(y,y')=-\sum_{i=1}^cy_ilog (y'_i)
 $$
+
+Gdzie
+
+$y_i$ - Prawdziwa etykieta oznaczająca przynależność do klasy *i*
+
+$y'_i$ - Przewidywane prawdopodobieństwo przynależności do klasy *i*
 
 Aby można było oszacować zmianę wagi, skorzystamy z techniki gradientowej optymalizacji. Należy obliczyć gradient dla wyjścia modelu oraz przewidywanego wyjścia i odwrócić kierunek w stronę (lokalnego) optimum. Dla funkcji sigmoidalnej postaci:
 
@@ -182,7 +227,7 @@ $$
 pochodna funkcji to:
 
 $$
-\frac{d}{dx}a(x)=x(1-x)
+\frac{d}{dx}a(x)=a(x)(1-a(x))
 $$
 
 Dla funkcji ReLU:
@@ -230,10 +275,27 @@ Oznaczenia:
 - $o_i$ - wejście;
 - $w_i$ - wagi połączeń między wejściem, a warstwą ukrytą;
 - $b_h$ - parametr bias w warstwie ukrytej.
+- $\delta$ - wielkość zmiany danej wagi, która pozwoli znaleźć się w minimum lokalnym
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
+### 1.5 Istota treningu ANN
+
+Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne (ewentualnie minimum lokalne w dopuszczalnym marginesie niedokładności). Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego.
+
+Można to uprawdopodobnić na wiele sposobów. Na przykład podczas inicjalizacji wag losuje się kilka lub więcej zestawów, a następnie dokonuje się selekcji takiego zestawu, który zwraca najmniejszy błąd.
+
+Zamiast algorytmu stochastycznego spadku gradientowego stosuje się inne, które na różnych etapach treningu promują bardziej eksplorację, niż eksploatację przestrzeni rozwiązań i vice versa. Robią to poprzez modyfikację współczynnika $\lambda$, który odpowiada za wielkość kroku (wyżarzanie kosinusowe). Robią to poprzez szacowanie pędów (momentów) gradientów (rodzina algorytmów Adam). Są algorytmy, które zmieniają osobno każdą wagę (Adagrad, RMSprop). Algorytmy wyżej wymienione są dowodem tego, jak różne sposoby opracowano na wdrażanie elastyczności do treningu.
+
+Kolejną sprawą jest zapobieganie przesadnemu dopasowaniu modelu do danych treningowych. Objawia się tym, że dla danych treningowych model bardzo trafnie przewiduje, zaś dla danych spoza tego zbioru model cechuje się gorszą precyzją, która w skrajnych sytuacjach będzie mniej lub bardziej podobna do zgadywania. W terminologii, która bardzo wiele zawdzięcza światu anglosaskiemu, nazywa się to **overfittingiem**. O sposobach na zapobieganie mu [piszę tutaj](#32-sposoby-na-ograniczenie-overfittingu).
+
 ## 2 Architektury ANN
+
+Pytania, na które poznasz odpowiedź w tym rozdziale.
+
+- Jak sieci głębokie rozpoznają ludzi i przedmioty na zdjęciach?
+- Jak działają współczesne LLM-y, które ułatwiają nam życie?
+- Na czym polega proces generowania deepfake'ów?
 
 ### 2.1 Sieci konwolucyjne (Convolutional Neural Network)
 
@@ -258,6 +320,12 @@ Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego 
 #### 2.7.4 Dekoder
 
 ## 3 Dodatki
+
+Pytania, na które poznasz odpowiedź w tym rozdziale.
+
+- Czym różnią się od siebie algorytmy modyfikujące wagi (optimizery)?
+- Jak skutecznie zapobiegać overfittingowi?
+- Jak komputer potrafi rozpoznać mowę człowieka?
 
 ### 3.1 Optimizery
 
@@ -301,9 +369,13 @@ wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zas
 
 #### Ograniczanie złożoności modelu
 
+### 3.3 Architektury modeli STT i TTS
+
+CNN, RNN i Transformery
+
 ## 4 Bibliografia
 
-1. R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 978-16-172-9618-5
+1. [Rhu] R. Hurbans. Grokking Artificial Intelligence Algorithms. Manning Publications Co. Rok wydania 2020. ISBN: 978-16-172-9618-5
 2. L. Tunstall, L. von Werra, T. Wolf. Przetwarzanie języka naturalnego z wykorzystaniem transformerów. Helion S.A. 2024. ISBN: 978-83-289-0711-9
 3. D. Chuan-En-Lin. 8 Simple Techniques to Prevent Overfitting, [online]. Dostęp w Internecie: <https://medium.com/data-science/8-simple-techniques-to-prevent-overfitting-4d443da2ef7d>. [dostęp: 31.07.2026]
 4. GeeksforGeeks. Activation Functions in Neural Network, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/machine-learning/activation-functions-neural-networks/>. [dostęp: 31.07.2026]
@@ -312,5 +384,5 @@ wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zas
 7. GeeksforGeeks. Optimization Rule in Deep Neural Networks, [online]. Dostęp w Internecie: <https://www.geeksforgeeks.org/deep-learning/optimization-rule-in-deep-neural-networks/>. [dostęp: 03.08.2026]
 8. D. Altinel. Development of Deep Learning Optimizers: Approaches, Concepts, and Update Rules. Istanbul Medeniyet University. 22.09.2025. Dostęp w Internecie: <https://arxiv.org/pdf/2509.18396>.
 9. A. Zhang, Z. C. Lipton, M. Li, A. J. Smola. Dive into Deep Learning. Release 0.16.1. 19.01.2021
-10. Illustrated guide to AI. Volume I. The Welch Labs. 2025
+10. [Wel] Illustrated guide to AI. Volume I. The Welch Labs. 2025
 11. A. W. Trask. Zrozumieć głębokie uczenie. Wydawnictwo PWN. Warszawa 2019. ISBN: 978-83-01-20782-3
