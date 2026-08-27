@@ -12,11 +12,12 @@
       - [ReLU](#relu)
       - [Lista funkcji aktywacji](#lista-funkcji-aktywacji)
     - [1.3 Wielowarstwowy perceptron - sieć głęboka](#13-wielowarstwowy-perceptron---sieć-głęboka)
+      - [Budowa](#budowa)
       - [Interpretacje sieci głębokich](#interpretacje-sieci-głębokich)
-    - [1.4 Zastosowania](#14-zastosowania)
-    - [1.5 Propagacja w przód](#15-propagacja-w-przód)
-    - [1.6 Propagacja w tył (Backpropagation)](#16-propagacja-w-tył-backpropagation)
-    - [1.7 Istota treningu ANN](#17-istota-treningu-ann)
+    - [1.4 Propagacja w przód](#14-propagacja-w-przód)
+    - [1.5 Propagacja w tył (Backpropagation)](#15-propagacja-w-tył-backpropagation)
+    - [1.6 Istota treningu ANN](#16-istota-treningu-ann)
+    - [1.7 Zastosowania](#17-zastosowania)
   - [2 Architektury ANN](#2-architektury-ann)
     - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
     - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
@@ -187,20 +188,7 @@ $K$ - liczba warstw pośrednich
 
 W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
 
-### 1.4 Zastosowania
-
-Sztuczne sieci neuronowe stosuje się m.in. do:
-
-- szacowania przyszłych cen akcji na giełdzie;
-- oceny ryzyka kredytowego;
-- tłumaczenia tekstów na obce języki;
-- wykrywania chorób ze zdjęć RTG;
-- analizy sentymentu na podstawie wpisów w Internecie;
-- generowania muzyki
-- generowania filmów i obrazów
-- wspomagania podejmowania decyzji w złożonych środowiskach operacyjnych
-
-### 1.5 Propagacja w przód
+### 1.4 Propagacja w przód
 
 Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje m.in. współczynnik spożycia alkoholu, palenie papierosów, czas aktywności fizycznej w tygodniu, BMI, ciśnienie krwi, etc.
 
@@ -212,7 +200,7 @@ $$
 n(x) = f(\sum_i{w_i x_i + b})
 $$
 
-### 1.6 Propagacja w tył (Backpropagation)
+### 1.5 Propagacja w tył (Backpropagation)
 
 Propagacja w tył jest algorytmem umożliwiającym wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
 
@@ -302,7 +290,7 @@ Oznaczenia:
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
-### 1.7 Istota treningu ANN
+### 1.6 Istota treningu ANN
 
 Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne (ewentualnie minimum lokalne w dopuszczalnym marginesie niedokładności). Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego.
 
@@ -311,6 +299,19 @@ Można to uprawdopodobnić na wiele sposobów. Na przykład podczas inicjalizacj
 Zamiast algorytmu stochastycznego spadku gradientowego stosuje się inne, które na różnych etapach treningu promują bardziej eksplorację, niż eksploatację przestrzeni rozwiązań i vice versa. Robią to poprzez modyfikację współczynnika $\lambda$, który odpowiada za wielkość kroku (wyżarzanie kosinusowe). Robią to poprzez szacowanie pędów (momentów) gradientów (rodzina algorytmów Adam). Są algorytmy, które zmieniają osobno każdą wagę (Adagrad, RMSprop). Algorytmy wyżej wymienione są dowodem tego, jak różne sposoby opracowano na wdrażanie elastyczności do treningu.
 
 Kolejną sprawą jest zapobieganie przesadnemu dopasowaniu modelu do danych treningowych. Objawia się tym, że dla danych treningowych model bardzo trafnie przewiduje, zaś dla danych spoza tego zbioru model cechuje się gorszą precyzją, która w skrajnych sytuacjach będzie mniej lub bardziej podobna do zgadywania. W terminologii, która bardzo wiele zawdzięcza światu anglosaskiemu, nazywa się to **overfittingiem**. O sposobach na zapobieganie mu [piszę tutaj](#32-sposoby-na-ograniczenie-overfittingu).
+
+### 1.7 Zastosowania
+
+Sztuczne sieci neuronowe stosuje się m.in. do:
+
+- szacowania przyszłych cen akcji na giełdzie;
+- oceny ryzyka kredytowego;
+- tłumaczenia tekstów na obce języki;
+- wykrywania chorób ze zdjęć RTG;
+- analizy sentymentu na podstawie wpisów w Internecie;
+- generowania muzyki
+- generowania filmów i obrazów
+- wspomagania podejmowania decyzji w złożonych środowiskach operacyjnych
 
 ## 2 Architektury ANN
 
