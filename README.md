@@ -47,7 +47,9 @@
       - [Eliminacja zmiennych nieistotnych](#eliminacja-zmiennych-nieistotnych)
       - [Wzbogacanie danych treningowych (data augmentation)](#wzbogacanie-danych-treningowych-data-augmentation)
       - [Ograniczanie złożoności modelu](#ograniczanie-złożoności-modelu)
-    - [3.3 Architektury modeli STT i TTS](#33-architektury-modeli-stt-i-tts)
+    - [3.3 XAI](#33-xai)
+    - [3.4 Metody treningu z niewielką lub żadną ilością danych](#34-metody-treningu-z-niewielką-lub-żadną-ilością-danych)
+    - [3.5 Architektury modeli STT i TTS](#35-architektury-modeli-stt-i-tts)
   - [4 Bibliografia](#4-bibliografia)
   
 ---
@@ -61,7 +63,7 @@ Pytania, na które poznasz odpowiedź w tym rozdziale.
 - Jak zbudowane są głębokie sieci neuronowe?
 - Na czym polega trening sieci neuronowej?
 - Na czym polega trudność w wytrenowaniu sieci neuronowej?
-- Jak można interpretować budowę sieci głębokich?
+- Jak można interpretować budowę głębokich sieci?
 
 ### 1.1 Geneza
 
@@ -307,7 +309,7 @@ Współczynnik uczenia ustawia się po to, aby parametry miały szansę odnaleź
 
 Pierwszą interpretacją, jaką proponuje R. Hurbans w [RHu] jest to, że każda kolejna warstwa ANN tworzy coraz bardziej korelujące dane, które wreszcie stają się w pełni skorelowane na warstwie wyjściowej.
 
-Drugą interpretacją zaproponowaną w [Wel] jest to, że sieć neuronowa odwzorowuje mapa regionów decyzyjnych oddzielonych granicami decyzyjnymi. Im więcej neuronów, tym więcej granic i obszarów, lecz im więcej warstw oddzielonych funkcją ReLU, tym więcej takich obszarów i tym mniejszy koszt obliczeniowy. Dobrze oddaje to wzór na maksymalną liczbę regionów:
+Drugą interpretacją zaproponowaną w [Wel] jest to, że sieć neuronową odwzorowuje mapa regionów decyzyjnych oddzielonych granicami decyzyjnymi. Im więcej neuronów, tym więcej granic i obszarów, lecz im więcej warstw w sieci, tym więcej takich obszarów i tym mniejszy koszt obliczeniowy. Dobrze oddaje to wzór na maksymalną liczbę regionów:
 
 $$
 
@@ -321,17 +323,19 @@ $D_i$ - liczba neuronów w warstwie wejściowej \
 $D$ - liczba neuronów na warstwę\
 $K$ - liczba warstw pośrednich
 
-W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
+W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę ukrytą są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność wyrażaną liczbą regionów. Ze wzoru można wywnioskować, że przyrost liczby regionów jest wielomianowy, natomiast ten sam przyrost wywołany zwiększeniem liczby warstw jest wykładniczy.
+
+Ogólnie rzecz biorąc, ciężko jest stworzyć czytelną i zrozumiałą interpretację modelu dla każdego problemu. Każdy neuron w sieci wykonuje swoje zadanie, które trudno jest opisać jednoznacznie i precyzyjnie. Ale są metody, które pomagają zrozumieć to, jak dana sieć neuronowa dochodzi do rozwiązań. Nimi zajmuje się osobna dziedzina badań - XAI (Explainable AI), dzięki której zyskujemy coraz lepszy wgląd w proces rozumowania systemów opartych na modelach AI, na podstawie którego można oceniać bezpieczeństwo i słuszność w podejściu tych modeli.
 
 ### 1.4 Istota treningu ANN
 
-Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne (ewentualnie minimum lokalne w dopuszczalnym marginesie niedokładności). Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego.
+Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne. Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego, ewentualnie położeniem rozwiązania w granicach dopuszczalnego błędu względem minimum globalnego.
 
 Można to uprawdopodobnić na wiele sposobów. Na przykład podczas inicjalizacji wag losuje się kilka lub więcej zestawów, a następnie dokonuje się selekcji takiego zestawu, który zwraca najmniejszy błąd.
 
-Zamiast algorytmu stochastycznego spadku gradientowego stosuje się inne, które na różnych etapach treningu promują bardziej eksplorację, niż eksploatację przestrzeni rozwiązań i vice versa. Robią to poprzez modyfikację współczynnika $\lambda$, który odpowiada za wielkość kroku (wyżarzanie kosinusowe). Robią to poprzez szacowanie pędów (momentów) gradientów (rodzina algorytmów Adam). Są algorytmy, które zmieniają osobno każdą wagę (Adagrad, RMSprop). Algorytmy wyżej wymienione są dowodem tego, jak różne sposoby opracowano na wdrażanie elastyczności do treningu.
+Zamiast algorytmu stochastycznego spadku gradientowego stosuje się inne, które na różnych etapach treningu promują bardziej eksplorację, niż eksploatację przestrzeni rozwiązań i vice versa. Robią to poprzez modyfikację współczynnika $\lambda$, który odpowiada za wielkość kroku (wyżarzanie kosinusowe). Robią to poprzez szacowanie pędów (momentów) gradientów (rodzina algorytmów Adam).
 
-Kolejną sprawą jest zapobieganie przesadnemu dopasowaniu modelu do danych treningowych. Objawia się tym, że dla danych treningowych model bardzo trafnie przewiduje, zaś dla danych spoza tego zbioru model cechuje się gorszą precyzją, która w skrajnych sytuacjach będzie mniej lub bardziej podobna do zgadywania. W terminologii, która bardzo wiele zawdzięcza światu anglosaskiemu, nazywa się to **overfittingiem**. O sposobach na zapobieganie mu [piszę tutaj](#32-sposoby-na-ograniczenie-overfittingu).
+Kolejną sprawą jest zapobieganie przesadnemu dopasowaniu modelu do danych treningowych. Objawia się to tym, że dla danych treningowych model bardzo trafnie przewiduje wyniki, zaś dla danych spoza tego zbioru model cechuje się gorszą precyzją, która w skrajnych sytuacjach będzie mniej lub bardziej podobna do zgadywania. W terminologii, która bardzo wiele zawdzięcza światu anglosaskiemu, nazywa się to **overfittingiem**. O sposobach na zapobieganie mu [piszę tutaj](#32-sposoby-na-ograniczenie-overfittingu).
 
 ### 1.5 Zastosowania
 
@@ -426,7 +430,13 @@ wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zas
 
 #### Ograniczanie złożoności modelu
 
-### 3.3 Architektury modeli STT i TTS
+### 3.3 XAI
+
+SHAP, LIME, wykresy PDP, ICE, testy ANOVA jedno i dwukierunkowe
+
+### 3.4 Metody treningu z niewielką lub żadną ilością danych
+
+### 3.5 Architektury modeli STT i TTS
 
 CNN, RNN i Transformery
 
