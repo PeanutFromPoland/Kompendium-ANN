@@ -13,11 +13,11 @@
       - [Lista funkcji aktywacji](#lista-funkcji-aktywacji)
     - [1.3 Wielowarstwowy perceptron - sieć głęboka](#13-wielowarstwowy-perceptron---sieć-głęboka)
       - [Budowa](#budowa)
+      - [Propagacja w przód](#propagacja-w-przód)
+      - [Propagacja w tył (Backpropagation)](#propagacja-w-tył-backpropagation)
       - [Interpretacje sieci głębokich](#interpretacje-sieci-głębokich)
-    - [1.4 Propagacja w przód](#14-propagacja-w-przód)
-    - [1.5 Propagacja w tył (Backpropagation)](#15-propagacja-w-tył-backpropagation)
-    - [1.6 Istota treningu ANN](#16-istota-treningu-ann)
-    - [1.7 Zastosowania](#17-zastosowania)
+    - [1.4 Istota treningu ANN](#14-istota-treningu-ann)
+    - [1.5 Zastosowania](#15-zastosowania)
   - [2 Architektury ANN](#2-architektury-ann)
     - [2.1 Sieci konwolucyjne (Convolutional Neural Network)](#21-sieci-konwolucyjne-convolutional-neural-network)
     - [2.2 Generatywne Sieci Adwersalne (Generative Adversal Network)](#22-generatywne-sieci-adwersalne-generative-adversal-network)
@@ -168,39 +168,27 @@ $$
 
 Sieci zbudowane są z wielu takich perceptronów ułożonych równolegle ze sobą tworząc warstwy sieci. Warstwy sieci z kolei są połączone szeregowo, co czyni je siecią głęboką. Najprostszą postacią sieci głębokiej jest perceptron wielowarstwowy, w skrócie MLP (Multi Layer Perceptron). W dalszej części kompendium pojawi się sieć sprzężenia do przodu (Feedforward Neural Network), która jest w zasadzie tym samym, z tym że nazwa nawiązuje do tego, jak model dokonuje obliczeń.
 
-#### Interpretacje sieci głębokich
+#### Budowa
 
-Pierwszą interpretacją, jaką proponuje R. Hurbans w [RHu] jest to, że każda kolejna warstwa ANN tworzy coraz bardziej korelujące dane, które wreszcie stają się w pełni skorelowane na warstwie wyjściowej.
+Sieć głęboka (MLP) składają się kolejno z:
 
-Drugą interpretacją zaproponowaną w [Wel] jest to, że sieć neuronowa odwzorowuje mapa regionów decyzyjnych oddzielonych granicami decyzyjnymi. Im więcej neuronów, tym więcej granic i obszarów, lecz im więcej warstw oddzielonych funkcją ReLU, tym więcej takich obszarów i tym mniejszy koszt obliczeniowy. Dobrze oddaje to wzór na maksymalną liczbę regionów:
+- warstwy wejścia (input layer)
+- warstw ukrytych (hidden layers)
+- warstwy wyjścia (output layer)
 
-$$
+#### Propagacja w przód
 
-N = (\frac{D}{D_i} + 1)^{D_i (K-1)}(\frac{D^2+D+2}{2})
-
-$$
-
-Gdzie:
-
-$D_i$ - liczba neuronów w warstwie wejściowej \
-$D$ - liczba neuronów na warstwę\
-$K$ - liczba warstw pośrednich
-
-W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
-
-### 1.4 Propagacja w przód
-
-Przyjmijmy, że jest sztuczna sieć neuronowa, która została wytrenowana do predykcji prawdopodobieństwa zawału serca. Jako wejście przyjmuje m.in. współczynnik spożycia alkoholu, palenie papierosów, czas aktywności fizycznej w tygodniu, BMI, ciśnienie krwi, etc.
-
-Sieć neuronowa składa się z 3 warstw, gdzie pierwsza ma 26 neuronów, druga ma 104 neurony, a trzecia ma jeden neuron zwracający wynik od 0 do 1 oznaczający prawdopodobieństwo zawału serca.
-
-Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. W każdym neuronie sygnały z poprzedniej warstwy są sumaryzowane, modyfikowane parametrem bias, a następnie stosuje się funkcję aktywacji, która wprowadza element nieliniowości.
+Warstwa wejścia dostarcza danych liczbowych do neuronów pierwszej warstwy ukrytej. Każdy taki neuron z osobna w warstwie ma własny zestaw wag oraz parametr szumu, zwany *biasem*, którymi traktuje dane wejściowe. Suma iloczynu skalarnego wektora wag i wektora danych wejściowych oraz szumu po zastosowaniu funkcji aktywacji stanowi sygnał wyjściowy danego neuronu. Sygnał ten następnie jest przekazywany do następnej warstwy i ich neuronów i traktowany tak samo.
 
 $$
 n(x) = f(\sum_i{w_i x_i + b})
 $$
 
-### 1.5 Propagacja w tył (Backpropagation)
+Sygnały z ostatniej warstwy ukrytej dochodzą do warstwy wyjściowej. Liczba neuronów w warstwie wyjściowej odpowiada liczbie klas szacowanej zmiennej zależnej lub liczbie zmiennych zależnych.
+
+Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. Sygnał nie jest propagowany ani w kierunku tych samych neuronów w warstwie, ani do tyłu. W innych architekturach np. sieciach rekurencyjnych lub rezydualnych sygnał może być przekazywany od neuronu do neuronu lub może je pomijać.
+
+#### Propagacja w tył (Backpropagation)
 
 Propagacja w tył jest algorytmem umożliwiającym wytrenowanie sztucznej sieci neuronowej. Proces treningu składa się z następujących kroków:
 
@@ -290,7 +278,27 @@ Oznaczenia:
 
 Współczynnik uczenia ustawia się po to, aby ustabilizować trening. Bez tego model ma tendencję do wpadania w najbliższe optimum lokalne, które najczęściej będzie ono niesatysfakcjonujące.
 
-### 1.6 Istota treningu ANN
+#### Interpretacje sieci głębokich
+
+Pierwszą interpretacją, jaką proponuje R. Hurbans w [RHu] jest to, że każda kolejna warstwa ANN tworzy coraz bardziej korelujące dane, które wreszcie stają się w pełni skorelowane na warstwie wyjściowej.
+
+Drugą interpretacją zaproponowaną w [Wel] jest to, że sieć neuronowa odwzorowuje mapa regionów decyzyjnych oddzielonych granicami decyzyjnymi. Im więcej neuronów, tym więcej granic i obszarów, lecz im więcej warstw oddzielonych funkcją ReLU, tym więcej takich obszarów i tym mniejszy koszt obliczeniowy. Dobrze oddaje to wzór na maksymalną liczbę regionów:
+
+$$
+
+N = (\frac{D}{D_i} + 1)^{D_i (K-1)}(\frac{D^2+D+2}{2})
+
+$$
+
+Gdzie:
+
+$D_i$ - liczba neuronów w warstwie wejściowej \
+$D$ - liczba neuronów na warstwę\
+$K$ - liczba warstw pośrednich
+
+W tym ujęciu sieci trzywarstwowe zawierające tylko jedną warstwę pośrednią są ukazane jako nieefektywne, ponieważ mają one mniejszą elastyczność.
+
+### 1.4 Istota treningu ANN
 
 Właściwe ustawienie wag w sieci głębokiej polega na tym, że dla danego zestawu danych treningowych sieć głęboka musi zwracać jak najmniejszy błąd na wyjściu. Algorytm propagacji wstecz działa na zasadzie spadku gradientowego. Niestety (dla architektów sieci głębokich) albo na szczęście (bowiem taka jest rzeczywistość) świat jest bardziej skomplikowany niż funkcja liniowa. W przestrzeni rozwiązań dopuszczalnych są rozwiązania, które zwracają zaledwie minima lokalne funkcji błędu, ale jest też co najmniej jedno rozwiązanie, które zwraca minimum globalne (ewentualnie minimum lokalne w dopuszczalnym marginesie niedokładności). Gradienty mogą zwracać wartości, które niekoniecznie kierują na minimum globalne, lecz na minimum lokalne, co bez dwóch zdań utrudnia trening. Zatem podczas treningu trzeba zwracać uwagę na to, aby kierunek optymalizacji był z jak największym prawdopodobieństwem zgodny z położeniem minimum globalnego.
 
@@ -300,7 +308,7 @@ Zamiast algorytmu stochastycznego spadku gradientowego stosuje się inne, które
 
 Kolejną sprawą jest zapobieganie przesadnemu dopasowaniu modelu do danych treningowych. Objawia się tym, że dla danych treningowych model bardzo trafnie przewiduje, zaś dla danych spoza tego zbioru model cechuje się gorszą precyzją, która w skrajnych sytuacjach będzie mniej lub bardziej podobna do zgadywania. W terminologii, która bardzo wiele zawdzięcza światu anglosaskiemu, nazywa się to **overfittingiem**. O sposobach na zapobieganie mu [piszę tutaj](#32-sposoby-na-ograniczenie-overfittingu).
 
-### 1.7 Zastosowania
+### 1.5 Zastosowania
 
 Sztuczne sieci neuronowe stosuje się m.in. do:
 
