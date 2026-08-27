@@ -174,9 +174,15 @@ Sieci zbudowane są z wielu takich perceptronów ułożonych równolegle ze sob�
 
 Sieć głęboka (MLP) składają się kolejno z:
 
-- warstwy wejścia (input layer)
+- warstwy wejściowej (input layer)
 - warstw ukrytych (hidden layers)
-- warstwy wyjścia (output layer)
+- warstwy wyjściowej (output layer)
+
+Warstwa wejściowa ma tyle neuronów, ile zmiennych jest wprowadzanych. Jeżeli któraś ze zmiennych jest kategorialna, należy zrzutować ją albo na liczby, albo na wektor zer i jedynek, co skutkuje oczywiście zwiększeniem liczby potrzebnych neuronów na początku.
+
+Warstwy ukryte mogą mieć dowolną, niezerową liczbę neuronów. Zwykle pierwsza z nich ma więcej neuronów niż w warstwie wejściowej. O tym jak liczba neuronów może wpływać na zdolność sieci do prognozowania piszę w tym rozdziale o [tutaj](#interpretacje-sieci-głębokich).
+
+Liczba neuronów w warstwie wyjściowej odpowiada liczbie klas szacowanej zmiennej zależnej. Jeżeli zmienna zależna jest ilościowa, to występuje tylko jeden neuron.
 
 #### Propagacja w przód
 
@@ -186,7 +192,7 @@ $$
 n(x) = f(\sum_i{w_i x_i + b})
 $$
 
-Sygnały z ostatniej warstwy ukrytej dochodzą do warstwy wyjściowej. Liczba neuronów w warstwie wyjściowej odpowiada liczbie klas szacowanej zmiennej zależnej lub liczbie zmiennych zależnych.
+Sygnały z ostatniej warstwy ukrytej dochodzą do warstwy wyjściowej. 
 
 Propagacja w przód polega na przekazywaniu sygnałów DO PRZODU warstwa po warstwie. Sygnał nie jest propagowany ani w kierunku tych samych neuronów w warstwie, ani do tyłu. W innych architekturach np. sieciach rekurencyjnych lub rezydualnych sygnał może być przekazywany od neuronu do neuronu lub może je pomijać.
 
