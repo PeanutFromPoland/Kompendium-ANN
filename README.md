@@ -280,7 +280,7 @@ $O=1$
 Dla neuronu wyjściowego (warstwy wyjściowej) wzór na zmianę wag połączeń kończących się w nim jest następujący:
 
 $
-\delta_{3,1}^{2,k}=e_{3,1} \cdot \frac{d}{dx}f(x)
+\delta_{3,1}^{2,k}=e_{3,1} \cdot \frac{d}{dx}f(n_{3,1})
 $
 
 $
