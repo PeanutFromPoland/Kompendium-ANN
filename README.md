@@ -1,5 +1,7 @@
 # Sztuczne Sieci Neuronowe
 
+Wersja v0.1.0
+
 ## Spis treści
 
 - [Sztuczne Sieci Neuronowe](#sztuczne-sieci-neuronowe)
