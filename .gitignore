@@ -1,3 +1,4 @@
 .env
 /project-management
 scripts/agentic_workflows/
+outputs/
