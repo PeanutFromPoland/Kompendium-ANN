@@ -244,3 +244,33 @@ print(f"Mini-batch accuracy: {mini_batch_acc:.4f}")
 ```
 
 Najbardziej krytyczna poprawka to usunięcie `argmax` z `forward()` i przejście z `BCEWithLogitsLoss` na `CrossEntropyLoss`. Bez tego sieć nie uczy się poprawnie jako klasyfikator 4-klasowy.
+
+
+
+###############################################
+
+Przeczytaj [ann.ipynb](scripts/introduction/ann.ipynb) i wykonaj kroki w następującej kolejności:
+1. Wskaż słabe punkty treningu i ewaluacji modelu regresyjnego
+2. Objaśnij, co należy poprawić i jak
+3. Wygeneruj poprawki włącznie z zaimplementowanym data_loaderem, który będzie trenował model mini-batchami
+
+##################### ODPOWIEDŹ #################
+
+### Slabe punkty treningu i ewaluacji modelu regresyjnego
+
+1. Model regresyjny byl uczony funkcja `CrossEntropyLoss`, a ewaluacja uzywala accuracy, ROC AUC i macierzy pomylek. To sa narzedzia klasyfikacyjne, wiec nie mierza jakosci predykcji ceny.
+2. `preprocessor.fit_transform()` byl wykonywany osobno na zbiorze testowym. To powoduje niespojna przestrzen cech i ryzyko data leakage. Zbior testowy powinien przechodzic tylko przez `preprocessor.transform()` nauczony na treningu.
+3. `price_per_sqft` jest cecha pochodna od ceny, czyli target leakage. Model widzi informacje wyliczona z wartosci, ktora ma przewidywac.
+4. `df.drop(columns=[...])` bez przypisania nie zmienial ramki danych, wiec czesc planowanego czyszczenia nie dzialala.
+5. Cena ma duza skale i duzy rozrzut. Siec neuronowa stabilniej uczy sie na przeskalowanym targetcie, a metryki nalezy liczyc po odwroceniu skalowania do oryginalnych jednostek.
+6. Full-batch trening slabiej wykorzystuje stochastycznosc optymalizacji. Mini-batche z `DataLoader` daja stabilniejszy i bardziej typowy proces uczenia.
+7. Zbior testowy nie powinien sterowac decyzjami treningowymi ani doborem hiperparametrow. Do tego sluzy walidacja, a test zostaje na koncowy pomiar generalizacji.
+
+### Co poprawiamy
+
+- Uzywamy jednego preprocessora: `fit_transform()` tylko dla train, `transform()` dla validation i test.
+- Dzielimy dane na train/validation/test, zeby test byl uzyty dopiero w finalnej ewaluacji.
+- Skaluje target przez `StandardScaler`, trenuje na wartosciach przeskalowanych i raportuje MAE, RMSE oraz R2 w dolarach po `inverse_transform()`.
+- Zastepuje trening klasyfikacyjny regresyjnym `MSELoss`.
+- Dodaje `create_data_loader()`, ktory tworzy `TensorDataset` i `DataLoader` do uczenia mini-batchami.
+- Wykresy treningu pokazuja `train_loss` i `val_loss`; ewaluacja pokazuje predykcje kontra wartosci rzeczywiste oraz residua.
