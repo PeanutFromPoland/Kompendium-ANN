@@ -412,7 +412,31 @@ Pytania, na które poznasz odpowiedź w tym rozdziale.
 
 #### AdamW
 
-### 3.2 Sposoby na ograniczenie overfittingu
+### 3.2 Batching
+
+#### SGD
+Obliczanie zmiany w wagach po obliczeniu dla jednej obserwacji.
+
+Zalety: szybkie zmiany, świetne do treningu w systemach chmurowych
+Wady: Niestabilny trening, ryzyko nietrafienia w optimum
+
+
+#### Batch gradient descent
+
+Obliczanie zmian po przeprocesowaniu całego kompletu treningowego
+
+Zalety: Dokładne poprawki, stabilna konwergencja
+Wady: Powolne i pracochłonne dla dużych zestawów danych, duże zużycie pamięci
+
+
+### Mini-batch gradient descent
+Obliczanie zmian dla mniejszych podzbiorów danych treningowych
+
+Zalety: Szybszy trening, bardziej stabilny od SGD
+Wady: Konieczność doboru właściwego rozmiaru podzbioru
+
+
+### 3.3 Sposoby na ograniczenie overfittingu
 
 #### Hold-out
 
@@ -438,13 +462,13 @@ wprowadzanie do zbioru danych treningowych artefaktów, które w praktycznym zas
 
 #### Ograniczanie złożoności modelu
 
-### 3.3 XAI
+### 3.4 XAI
 
 SHAP, LIME, wykresy PDP, ICE, testy ANOVA jedno i dwukierunkowe
 
-### 3.4 Metody treningu z niewielką lub żadną ilością danych
+### 3.5 Metody treningu z niewielką lub żadną ilością danych
 
-### 3.5 Architektury modeli STT i TTS
+### 3.6 Architektury modeli STT i TTS
 
 CNN, RNN i Transformery
 
@@ -461,3 +485,4 @@ CNN, RNN i Transformery
 9. A. Zhang, Z. C. Lipton, M. Li, A. J. Smola. Dive into Deep Learning. Release 0.16.1. 19.01.2021
 10. [Wel] Illustrated guide to AI. Volume I. The Welch Labs. 2025
 11. A. W. Trask. Zrozumieć głębokie uczenie. Wydawnictwo PWN. Warszawa 2019. ISBN: 978-83-01-20782-3
+12. L. Bhuva. Mini-Batch Gradient Descent: A Comprehensive Guide, [online]. Dostęp w Internecie: <https://medium.com/@lomashbhuva/mini-batch-gradient-descent-a-comprehensive-guide-ba27a6dc4863>. [dostęp: 31.08.2026]
